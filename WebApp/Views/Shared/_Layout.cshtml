@@ -6,7 +6,7 @@
     <title>@ViewData["Title"] - WebApp</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true"/>
-    <link rel="stylesheet" href="~/WebApp.styles.css" asp-append-version="true"/>
+    <link rel="stylesheet" href="~/WebApplication.styles.css" asp-append-version="true"/>
 </head>
 <body>
 <header>
@@ -25,6 +25,54 @@
                     <li class="nav-item">
                         <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                     </li>
+                    
+                    <li class="nav-item dropdown">
+                              <a class="nav-link dropdown-toggle text-dark" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Admin
+                              </a>
+                              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                  <li class="nav-item">
+                                      <a class="nav-link text-dark" asp-area="Admin" asp-controller="Cards" asp-action="Index">Cards</a>
+                                  </li>
+                                  <li class="nav-item">
+                                      <a class="nav-link text-dark" asp-area="Admin" asp-controller="Cordinates" asp-action="Index">Coordinates</a>
+                                  </li>
+                                  <li class="nav-item">
+                                      <a class="nav-link text-dark" asp-area="Admin" asp-controller="CouponCategories" asp-action="Index">Coupon Categories</a>
+                                  </li>
+                                  <li class="nav-item">
+                                      <a class="nav-link text-dark" asp-area="Admin" asp-controller="ItemCategories" asp-action="Index">Item Categories</a>
+                                  </li>
+                                  <li class="nav-item">
+                                      <a class="nav-link text-dark" asp-area="Admin" asp-controller="ItemsInOrder" asp-action="Index">Items In Order</a>
+                                  </li>
+                                  <li class="nav-item">
+                                      <a class="nav-link text-dark" asp-area="Admin" asp-controller="MenuItems" asp-action="Index">Menu Items</a>
+                                  </li>
+                                  <li class="nav-item">
+                                      <a class="nav-link text-dark" asp-area="Admin" asp-controller="Order" asp-action="Index">Order</a>
+                                  </li>
+                                  <li class="nav-item">
+                                      <a class="nav-link text-dark" asp-area="Admin" asp-controller="Tickets" asp-action="Index">Tickets</a>
+                                  </li>
+                                  <li class="nav-item">
+                                      <a class="nav-link text-dark" asp-area="Admin" asp-controller="TicketsInOrder" asp-action="Index">Tickets In Order</a>
+                                  </li>
+                                  <li class="nav-item">
+                                      <a class="nav-link text-dark" asp-area="Admin" asp-controller="UserLogs" asp-action="Index">User Logs</a>
+                                  </li>
+                                  <li class="nav-item">
+                                      <a class="nav-link text-dark" asp-area="Admin" asp-controller="UsersCategory" asp-action="Index">Users Category</a>
+                                  </li>
+                                  <li class="nav-item">
+                                      <a class="nav-link text-dark" asp-area="Admin" asp-controller="UsersCoupon" asp-action="Index">Users Coupon</a>
+                                  </li>
+                                  <li class="nav-item">
+                                      <a class="nav-link text-dark" asp-area="Admin" asp-controller="UsersInCategory" asp-action="Index">Users In Category</a>
+                                  </li>
+                              </ul>
+                            </li>
+                    
                 </ul>
                 <partial name="_LoginPartial"/>
             </div>
