@@ -6,8 +6,6 @@ namespace App.Domain;
 
 public class Coordinate : DomainEntityMetaId
 {
-    [MinLength(1)]
-    [MaxLength(10)]
     public int Index { get; set; } = default!;
     
     [MinLength(1)]

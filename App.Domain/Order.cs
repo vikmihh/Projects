@@ -7,8 +7,6 @@ namespace App.Domain;
 
 public class Order : DomainEntityMetaId
 {
-    public DateTime CreatedAt { get; set; } = default!;
-    
     public DateTime DeletedAt { get; set; } = default!;
     
     public decimal Price { get; set; } = default!;
@@ -17,8 +15,6 @@ public class Order : DomainEntityMetaId
     
     public decimal FinalPrice { get; set; } = default!;
     
-    [MinLength(1)]
-    [MaxLength(256)]
     public int OrderNr { get; set; } = default!;
     
     [MaxLength(256)]

@@ -31,9 +31,8 @@ namespace App.DAL.EF.Migrations
                     b.Property<Guid>("AppUserId")
                         .HasColumnType("uuid");
 
-                    b.Property<int>("CardNumber")
-                        .HasMaxLength(16)
-                        .HasColumnType("integer");
+                    b.Property<long>("CardNumber")
+                        .HasColumnType("bigint");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
@@ -42,8 +41,8 @@ namespace App.DAL.EF.Migrations
                         .HasMaxLength(32)
                         .HasColumnType("character varying(32)");
 
-                    b.Property<DateOnly>("ExpiryDate")
-                        .HasColumnType("date");
+                    b.Property<DateTime>("ExpiryDate")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
@@ -56,7 +55,6 @@ namespace App.DAL.EF.Migrations
                         .HasColumnType("character varying(128)");
 
                     b.Property<int>("SecurityCode")
-                        .HasMaxLength(3)
                         .HasColumnType("integer");
 
                     b.Property<string>("UpdatedAt")
@@ -87,7 +85,6 @@ namespace App.DAL.EF.Migrations
                         .HasColumnType("character varying(32)");
 
                     b.Property<int>("Index")
-                        .HasMaxLength(10)
                         .HasColumnType("integer");
 
                     b.Property<string>("Location")
@@ -525,7 +522,6 @@ namespace App.DAL.EF.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<int>("CouponNr")
-                        .HasMaxLength(256)
                         .HasColumnType("integer");
 
                     b.Property<DateTime>("CreatedAt")
@@ -542,7 +538,6 @@ namespace App.DAL.EF.Migrations
                         .HasColumnType("boolean");
 
                     b.Property<int>("PromoCode")
-                        .HasMaxLength(20)
                         .HasColumnType("integer");
 
                     b.Property<string>("UpdatedAt")

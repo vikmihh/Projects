@@ -6,12 +6,8 @@ namespace App.Domain;
 
 public class UserCoupon : DomainEntityMetaId
 {
-    [MinLength(1)]
-    [MaxLength(256)]
     public int CouponNr { get; set; } = default!;
     
-    [MinLength(1)]
-    [MaxLength(20)]
     public int PromoCode { get; set; } = default!;
     
     public bool IsUsed { get; set; } = default!;
