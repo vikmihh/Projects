@@ -10,7 +10,7 @@ public class Card : DomainEntityMetaId
 {
     [MinLength(1)]
     [MaxLength(128)]
-    [DisplayName("First Name")]
+    [Display(ResourceType = typeof(App.Resources.App.Domain.Card), Name = nameof(FirstName))]
     public string FirstName { get; set; } = default!;
     
     [MinLength(1)]
