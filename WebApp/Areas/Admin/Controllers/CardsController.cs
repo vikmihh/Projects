@@ -9,10 +9,13 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using App.DAL.EF;
 using App.Domain;
+using Base.Extensions;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebApp.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = "admin")]
     public class CardsController : Controller
     {
         private readonly IAppUnitOfWork _uow;
@@ -25,7 +28,7 @@ namespace WebApp.Areas.Admin.Controllers
         // GET: Admin/Cards
         public async Task<IActionResult> Index()
         {
-            var results = await _uow.Cards.GetAllAsync();
+            var results = await _uow.Cards.GetAllAsync(User.GetUserId());
             return View(results);
         }
 
@@ -57,10 +60,12 @@ namespace WebApp.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("FirstName,LastName,CardNumber,SecurityCode,ExpiryDate,AppUserId,CreatedBy,CreatedAt,UpdatedAt,UpdatedBy,Id")] Card card)
+        public async Task<IActionResult> Create(Card card)
         {
             if (ModelState.IsValid)
             {
+                card.AppUserId = User.GetUserId();
+                    
                 card.Id = Guid.NewGuid();
                 card.CreatedAt = DateTime.SpecifyKind(card.CreatedAt, DateTimeKind.Utc);
                 card.UpdatedBy = DateTime.SpecifyKind(card.UpdatedBy, DateTimeKind.Utc);
@@ -95,13 +100,14 @@ namespace WebApp.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("FirstName,LastName,CardNumber,SecurityCode,ExpiryDate,AppUserId,CreatedBy,CreatedAt,UpdatedAt,UpdatedBy,Id")] Card card)
+        public async Task<IActionResult> Edit(Guid id, Card card)
         {
             if (id != card.Id)
             {
                 return NotFound();
             }
 
+            card.AppUserId = User.GetUserId();
             if (ModelState.IsValid)
             {
                 try

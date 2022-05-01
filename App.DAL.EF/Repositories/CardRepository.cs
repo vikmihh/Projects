@@ -16,6 +16,16 @@ public class CardRepository : BaseEntityRepository<Card, AppDbContext>, ICardRep
         var query = CreateQuery(noTracking);
         return await query.Where(a => a.FirstName.Contains(firstName.ToUpper())).ToListAsync();
     }
+    
+    
+    
+    public async Task<IEnumerable<Card>> GetAllAsync(Guid userId, bool noTracking = true)
+    {
+        var query = CreateQuery(noTracking);
+        query = query.Include(u => u.AppUser)
+            .Where(m => m.AppUserId == userId);
+        return await query.ToListAsync();
+    } 
 
     public Task<IEnumerable<Card>> GetAllByFullNameAsync(string fullName, bool noTracking = true)
     {
@@ -26,4 +36,5 @@ public class CardRepository : BaseEntityRepository<Card, AppDbContext>, ICardRep
     {
         throw new NotImplementedException();
     }
+    
 }
