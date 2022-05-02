@@ -7,6 +7,7 @@ namespace App.DAL.EF;
 
 public class AppDbContext : IdentityDbContext<AppUser, AppRole, Guid>
 {
+    public DbSet<RefreshToken> RefreshTokens { get; set; } = default!;
     public DbSet<Card> Cards { get; set; } = default!;
     public DbSet<Coordinate> Coordinates { get; set; } = default!;
     public DbSet<CouponCategory> CouponCategories { get; set; } = default!;
