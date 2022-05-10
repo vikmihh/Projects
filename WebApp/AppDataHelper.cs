@@ -54,6 +54,7 @@ public static class AppDataHelper
             {
                 ("admin", "System administrator"),
                 ("user", "Normal system user")
+                //("translator", "Language maintenance administrator")
             };
             
             foreach (var roleInfo in roles)
@@ -89,8 +90,8 @@ public static class AppDataHelper
                     user = new AppUser()
                     {
                         Email = userInfo.username,
-                        //FirstName = userInfo.firstName,
-                        //LastName = userInfo.lastName,
+                        FirstName = userInfo.firstName,
+                        LastName = userInfo.lastName,
                         UserName = userInfo.username,
                         EmailConfirmed = true,
                     };
@@ -113,17 +114,22 @@ public static class AppDataHelper
 
         if (configuration.GetValue<bool>("DataInitialization:SeedData"))
         {
-            var f = new FooBar
+            
+            var f = new ComponentTranslation
             {
-                Name =
+                
+                Translation =
                 {
                     ["en"] = "english",
-                    ["et"] = "estonian",
-                    ["ru"] = "russian",
-                }
+                    ["et"] = "eesti",
+                    ["ru"] = "русский",
+                },
+                ComponentName = "LANG_DROPDOWN"
+
             };
-            context.FooBars.Add(f);
+            context.ComponentTranslations.Add(f);
             context.SaveChanges();
+            
         }
     }
 }

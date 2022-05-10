@@ -3,7 +3,12 @@ using Base.Contracts.DAL;
 
 namespace App.Contracts.DAL;
 
-public interface IUserCategoryRepository : IEntityRepository<UserCategory>
+public interface IUserCategoryRepository : IEntityRepository<App.DTO.UserCategory>, IUserCategoryRepositoryCustom<App.DTO.UserCategory>
 {
-    Task<IEnumerable<Card>> GetAllByFirstNameAsync(string firstName, bool noTracking = true);
+    
+}
+
+public interface IUserCategoryRepositoryCustom<TEntity>
+{
+    Task<IEnumerable<TEntity>> GetAllByFirstNameAsync(string firstName, bool noTracking = true);
 }

@@ -26,12 +26,13 @@ public class AccountController : ControllerBase
     private readonly AppDbContext _context;
     
         
-    public AccountController(SignInManager<AppUser> signInManager, UserManager<AppUser> userManager, ILogger<AccountController> logger, IConfiguration configuration)
+    public AccountController(SignInManager<AppUser> signInManager, UserManager<AppUser> userManager, ILogger<AccountController> logger, IConfiguration configuration, AppDbContext context)
     {
         _signInManager = signInManager;
         _userManager = userManager;
         _logger = logger;
         _configuration = configuration;
+        _context = context;
     }
     
     [HttpPost]

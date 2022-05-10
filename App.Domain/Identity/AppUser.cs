@@ -14,8 +14,6 @@ public class AppUser : BaseUser
     public string LastName { get; set; } = default!;
     
 
-    //public ICollection<RefreshToken>? RefreshTokens { get; set; }
-
     public string FirstLastName => FirstName + " " + LastName;
     public string LastFirstName => LastName + " " + FirstName;
 

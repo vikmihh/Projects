@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using App.Contracts.BLL;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -13,27 +14,28 @@ namespace WebApp.ApiControllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    // [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class UsersCategoryController : ControllerBase
     {
-        private readonly AppDbContext _context;
+        private readonly IAppBLL _bll;
 
-        public UsersCategoryController(AppDbContext context)
+        public UsersCategoryController(IAppBLL bll)
         {
-            _context = context;
+            _bll = bll;
         }
 
         // GET: api/UsersCategory
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<UserCategory>>> GetUserCategories()
+        public async Task<IEnumerable<App.BLL.DTO.UserCategory>> GetUserCategories()
         {
-            return await _context.UserCategories.ToListAsync();
+            return await _bll.UsersCategory.GetAllAsync();
         }
 
         // GET: api/UsersCategory/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<UserCategory>> GetUserCategory(Guid id)
+        public async Task<ActionResult<App.BLL.DTO.UserCategory>> GetUserCategory(Guid id)
         {
-            var userCategory = await _context.UserCategories.FindAsync(id);
+            var userCategory = await _bll.UsersCategory.FirstOrDefaultAsync(id);
 
             if (userCategory == null)
             {
@@ -46,22 +48,22 @@ namespace WebApp.ApiControllers
         // PUT: api/UsersCategory/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutUserCategory(Guid id, UserCategory userCategory)
+        public async Task<IActionResult> PutUserCategory(Guid id, App.BLL.DTO.UserCategory userCategory)
         {
             if (id != userCategory.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(userCategory).State = EntityState.Modified;
+            _bll.UsersCategory.Update(userCategory);
 
             try
             {
-                await _context.SaveChangesAsync();
+                await _bll.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!UserCategoryExists(id))
+                if (!await UserCategoryExists(id))
                 {
                     return NotFound();
                 }
@@ -77,10 +79,10 @@ namespace WebApp.ApiControllers
         // POST: api/UsersCategory
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<UserCategory>> PostUserCategory(UserCategory userCategory)
+        public async Task<ActionResult<UserCategory>> PostUserCategory(App.BLL.DTO.UserCategory userCategory)
         {
-            _context.UserCategories.Add(userCategory);
-            await _context.SaveChangesAsync();
+            _bll.UsersCategory.Add(userCategory);
+            await _bll.SaveChangesAsync();
 
             return CreatedAtAction("GetUserCategory", new { id = userCategory.Id }, userCategory);
         }
@@ -89,21 +91,21 @@ namespace WebApp.ApiControllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteUserCategory(Guid id)
         {
-            var userCategory = await _context.UserCategories.FindAsync(id);
+            var userCategory = await _bll.UsersCategory.FirstOrDefaultAsync(id);
             if (userCategory == null)
             {
                 return NotFound();
             }
 
-            _context.UserCategories.Remove(userCategory);
-            await _context.SaveChangesAsync();
+            _bll.UsersCategory.Remove(userCategory);
+            await _bll.SaveChangesAsync();
 
             return NoContent();
         }
 
-        private bool UserCategoryExists(Guid id)
+        private async Task<bool> UserCategoryExists(Guid id)
         {
-            return _context.UserCategories.Any(e => e.Id == id);
+            return await _bll.UsersCategory.ExistsAsync( id);
         }
     }
 }

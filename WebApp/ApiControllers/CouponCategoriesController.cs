@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using App.Contracts.BLL;
 using App.Contracts.DAL;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -16,28 +17,28 @@ namespace WebApp.ApiControllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    // [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class CouponCategoriesController : ControllerBase
     {
-        private readonly IAppUnitOfWork _uow;
+        private readonly IAppBLL _bll;
 
-        public CouponCategoriesController(IAppUnitOfWork uow)
+        public CouponCategoriesController(IAppBLL bll)
         {
-            _uow = uow;
+            _bll = bll;
         }
 
         // GET: api/CouponCategories
         [HttpGet]
-        public async Task<IEnumerable<CouponCategory>> GetCouponCategories()
+        public async Task<IEnumerable<App.BLL.DTO.CouponCategory>> GetCouponCategories()
         {
-            return await _uow.CouponCategories.GetAllAsync();
+            return await _bll.CouponCategories.GetAllAsync();
         }
 
         // GET: api/CouponCategories/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<CouponCategory>> GetCouponCategory(Guid id)
+        public async Task<ActionResult<App.BLL.DTO.CouponCategory>> GetCouponCategory(Guid id)
         {
-            var couponCategory = await _uow.CouponCategories.FirstOrDefaultAsync(id);
+            var couponCategory = await _bll.CouponCategories.FirstOrDefaultAsync(id);
 
             if (couponCategory == null)
             {
@@ -50,18 +51,18 @@ namespace WebApp.ApiControllers
         // PUT: api/CouponCategories/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutCouponCategory(Guid id, CouponCategory couponCategory)
+        public async Task<IActionResult> PutCouponCategory(Guid id, App.BLL.DTO.CouponCategory couponCategory)
         {
             if (id != couponCategory.Id)
             {
                 return BadRequest();
             }
 
-            _uow.CouponCategories.Update(couponCategory);
+            _bll.CouponCategories.Update(couponCategory);
 
             try
             {
-                await _uow.SaveChangesAsync();
+                await _bll.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -81,10 +82,10 @@ namespace WebApp.ApiControllers
         // POST: api/CouponCategories
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<CouponCategory>> PostCouponCategory(CouponCategory couponCategory)
+        public async Task<ActionResult<CouponCategory>> PostCouponCategory(App.BLL.DTO.CouponCategory couponCategory)
         {
-            _uow.CouponCategories.Add(couponCategory);
-            await _uow.SaveChangesAsync();
+            _bll.CouponCategories.Add(couponCategory);
+            await _bll.SaveChangesAsync();
 
             return CreatedAtAction("GetCouponCategory", new { id = couponCategory.Id }, couponCategory);
         }
@@ -93,21 +94,21 @@ namespace WebApp.ApiControllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCouponCategory(Guid id)
         {
-            var couponCategory = await _uow.CouponCategories.FirstOrDefaultAsync(id);
+            var couponCategory = await _bll.CouponCategories.FirstOrDefaultAsync(id);
             if (couponCategory == null)
             {
                 return NotFound();
             }
 
-            _uow.CouponCategories.Remove(couponCategory);
-            await _uow.SaveChangesAsync();
+            _bll.CouponCategories.Remove(couponCategory);
+            await _bll.SaveChangesAsync();
 
             return NoContent();
         }
 
         private async Task<bool> CouponCategoryExists(Guid id)
         {
-            return await _uow.CouponCategories.ExistsAsync(id);
+            return await _bll.CouponCategories.ExistsAsync(id);
         }
     }
 }

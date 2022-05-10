@@ -3,7 +3,12 @@ using Base.Contracts.DAL;
 
 namespace App.Contracts.DAL;
 
-public interface IUserCouponRepository : IEntityRepository<UserCoupon>
+public interface IUserCouponRepository : IEntityRepository<App.DTO.UserCoupon>, IUserCouponRepositoryCustom<App.DTO.UserCoupon>
 {
-    Task<IEnumerable<Card>> GetAllByFirstNameAsync(string firstName, bool noTracking = true);
+    
+}
+
+public interface IUserCouponRepositoryCustom<TEntity>
+{
+    Task<IEnumerable<TEntity>> GetAllByFirstNameAsync(string firstName, bool noTracking = true);
 }

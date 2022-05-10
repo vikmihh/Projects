@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using App.Contracts.BLL;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -13,27 +14,28 @@ namespace WebApp.ApiControllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    // [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class TicketsController : ControllerBase
     {
-        private readonly AppDbContext _context;
+        private readonly IAppBLL _bll;
 
-        public TicketsController(AppDbContext context)
+        public TicketsController(IAppBLL bll)
         {
-            _context = context;
+            _bll = bll;
         }
 
         // GET: api/Tickets
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Ticket>>> GetTickets()
+        public async Task<IEnumerable<App.BLL.DTO.Ticket>> GetTickets()
         {
-            return await _context.Tickets.ToListAsync();
+            return await _bll.Tickets.GetAllAsync();
         }
 
         // GET: api/Tickets/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Ticket>> GetTicket(Guid id)
+        public async Task<ActionResult<App.BLL.DTO.Ticket>> GetTicket(Guid id)
         {
-            var ticket = await _context.Tickets.FindAsync(id);
+            var ticket = await _bll.Tickets.FirstOrDefaultAsync(id);
 
             if (ticket == null)
             {
@@ -46,22 +48,22 @@ namespace WebApp.ApiControllers
         // PUT: api/Tickets/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutTicket(Guid id, Ticket ticket)
+        public async Task<IActionResult> PutTicket(Guid id, App.BLL.DTO.Ticket ticket)
         {
             if (id != ticket.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(ticket).State = EntityState.Modified;
+            _bll.Tickets.Update(ticket);
 
             try
             {
-                await _context.SaveChangesAsync();
+                await _bll.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!TicketExists(id))
+                if (!await TicketExists(id))
                 {
                     return NotFound();
                 }
@@ -77,10 +79,10 @@ namespace WebApp.ApiControllers
         // POST: api/Tickets
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Ticket>> PostTicket(Ticket ticket)
+        public async Task<ActionResult<Ticket>> PostTicket(App.BLL.DTO.Ticket ticket)
         {
-            _context.Tickets.Add(ticket);
-            await _context.SaveChangesAsync();
+            _bll.Tickets.Add(ticket);
+            await _bll.SaveChangesAsync();
 
             return CreatedAtAction("GetTicket", new { id = ticket.Id }, ticket);
         }
@@ -89,21 +91,21 @@ namespace WebApp.ApiControllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteTicket(Guid id)
         {
-            var ticket = await _context.Tickets.FindAsync(id);
+            var ticket = await _bll.Tickets.FirstOrDefaultAsync(id);
             if (ticket == null)
             {
                 return NotFound();
             }
 
-            _context.Tickets.Remove(ticket);
-            await _context.SaveChangesAsync();
+            _bll.Tickets.Remove(ticket);
+            await _bll.SaveChangesAsync();
 
             return NoContent();
         }
 
-        private bool TicketExists(Guid id)
+        private async Task<bool> TicketExists(Guid id)
         {
-            return _context.Tickets.Any(e => e.Id == id);
+            return await _bll.Tickets.ExistsAsync( id);
         }
     }
 }

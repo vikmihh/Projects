@@ -3,12 +3,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using App.Contracts.BLL;
 using App.Contracts.DAL;
+using App.BLL.DTO;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using App.DAL.EF;
-using App.Domain;
 using Base.Extensions;
 using Microsoft.AspNetCore.Authorization;
 
@@ -18,17 +19,17 @@ namespace WebApp.Areas.Admin.Controllers
     [Authorize(Roles = "admin")]
     public class CardsController : Controller
     {
-        private readonly IAppUnitOfWork _uow;
+        private readonly IAppBLL _bll;
 
-        public CardsController(IAppUnitOfWork uow)
+        public CardsController(IAppBLL bll)
         {
-            _uow = uow;
+            _bll = bll;
         }
 
         // GET: Admin/Cards
         public async Task<IActionResult> Index()
         {
-            var results = await _uow.Cards.GetAllAsync(User.GetUserId());
+            var results = await _bll.Cards.GetAllAsync(User.GetUserId());
             return View(results);
         }
 
@@ -40,7 +41,7 @@ namespace WebApp.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            var card = await _uow.Cards.FirstOrDefaultAsync(id.Value);
+            var card = await _bll.Cards.FirstOrDefaultAsync(id.Value);
             if (card == null)
             {
                 return NotFound();
@@ -60,21 +61,17 @@ namespace WebApp.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Card card)
+        public async Task<IActionResult> Create(App.BLL.DTO.Card card)
         {
             if (ModelState.IsValid)
             {
                 card.AppUserId = User.GetUserId();
                     
                 card.Id = Guid.NewGuid();
-                card.CreatedAt = DateTime.SpecifyKind(card.CreatedAt, DateTimeKind.Utc);
-                card.UpdatedBy = DateTime.SpecifyKind(card.UpdatedBy, DateTimeKind.Utc);
-                card.ExpiryDate = DateTime.SpecifyKind(card.ExpiryDate, DateTimeKind.Utc);
-                _uow.Cards.Add(card);
-                await _uow.SaveChangesAsync();
+                _bll.Cards.Add(card);
+                await _bll.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            //ViewData["AppUserId"] = new SelectList(_context.Users, "Id", "Id", card.AppUserId);
             return View(card);
         }
 
@@ -86,7 +83,7 @@ namespace WebApp.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            var card = await _uow.Cards.FirstOrDefaultAsync(id.Value);
+            var card = await _bll.Cards.FirstOrDefaultAsync(id.Value);
             if (card == null)
             {
                 return NotFound();
@@ -100,7 +97,7 @@ namespace WebApp.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, Card card)
+        public async Task<IActionResult> Edit(Guid id, App.BLL.DTO.Card card)
         {
             if (id != card.Id)
             {
@@ -112,8 +109,8 @@ namespace WebApp.Areas.Admin.Controllers
             {
                 try
                 {
-                    _uow.Cards.Update(card);
-                    await _uow.SaveChangesAsync();
+                    _bll.Cards.Update(card);
+                    await _bll.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -140,7 +137,7 @@ namespace WebApp.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            var card = await _uow.Cards.FirstOrDefaultAsync(id.Value);
+            var card = await _bll.Cards.FirstOrDefaultAsync(id.Value);
             if (card == null)
             {
                 return NotFound();
@@ -154,15 +151,15 @@ namespace WebApp.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var card = await _uow.Cards.FirstOrDefaultAsync(id);
-            await _uow.Cards.RemoveAsync(id);
-            await _uow.SaveChangesAsync();
+            var card = await _bll.Cards.FirstOrDefaultAsync(id);
+            await _bll.Cards.RemoveAsync(id);
+            await _bll.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private async Task<bool> CardExists(Guid id)
         {
-            return await _uow.Cards.ExistsAsync(id);
+            return await _bll.Cards.ExistsAsync(id);
         }
     }
 }

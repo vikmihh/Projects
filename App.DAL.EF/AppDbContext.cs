@@ -21,7 +21,7 @@ public class AppDbContext : IdentityDbContext<AppUser, AppRole, Guid>
     public DbSet<UserCoupon> UserCoupons { get; set; } = default!;
     public DbSet<UserInCategory> UsersInCategories { get; set; } = default!;
     public DbSet<UserLog> UserLogs { get; set; } = default!;
-    public DbSet<FooBar> FooBars { get; set; } = default!;
+    public DbSet<ComponentTranslation> ComponentTranslations { get; set; } = default!;
     
     public AppDbContext(DbContextOptions<AppDbContext> options)
         : base(options)

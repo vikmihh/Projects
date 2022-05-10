@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using App.Contracts.BLL;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -13,27 +14,28 @@ namespace WebApp.ApiControllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    // [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class UsersCouponController : ControllerBase
     {
-        private readonly AppDbContext _context;
+        private readonly IAppBLL _bll;
 
-        public UsersCouponController(AppDbContext context)
+        public UsersCouponController(IAppBLL bll)
         {
-            _context = context;
+            _bll = bll;
         }
 
         // GET: api/UsersCoupon
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<UserCoupon>>> GetUserCoupons()
+        public async Task<IEnumerable<App.BLL.DTO.UserCoupon>> GetUserCoupons()
         {
-            return await _context.UserCoupons.ToListAsync();
+            return await _bll.UsersCoupon.GetAllAsync();
         }
 
         // GET: api/UsersCoupon/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<UserCoupon>> GetUserCoupon(Guid id)
+        public async Task<ActionResult<App.BLL.DTO.UserCoupon>> GetUserCoupon(Guid id)
         {
-            var userCoupon = await _context.UserCoupons.FindAsync(id);
+            var userCoupon = await _bll.UsersCoupon.FirstOrDefaultAsync(id);
 
             if (userCoupon == null)
             {
@@ -46,22 +48,22 @@ namespace WebApp.ApiControllers
         // PUT: api/UsersCoupon/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutUserCoupon(Guid id, UserCoupon userCoupon)
+        public async Task<IActionResult> PutUserCoupon(Guid id, App.BLL.DTO.UserCoupon userCoupon)
         {
             if (id != userCoupon.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(userCoupon).State = EntityState.Modified;
+            _bll.UsersCoupon.Update(userCoupon);
 
             try
             {
-                await _context.SaveChangesAsync();
+                await _bll.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!UserCouponExists(id))
+                if (!await UserCouponExists(id))
                 {
                     return NotFound();
                 }
@@ -77,10 +79,10 @@ namespace WebApp.ApiControllers
         // POST: api/UsersCoupon
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<UserCoupon>> PostUserCoupon(UserCoupon userCoupon)
+        public async Task<ActionResult<UserCoupon>> PostUserCoupon(App.BLL.DTO.UserCoupon userCoupon)
         {
-            _context.UserCoupons.Add(userCoupon);
-            await _context.SaveChangesAsync();
+            _bll.UsersCoupon.Add(userCoupon);
+            await _bll.SaveChangesAsync();
 
             return CreatedAtAction("GetUserCoupon", new { id = userCoupon.Id }, userCoupon);
         }
@@ -89,21 +91,21 @@ namespace WebApp.ApiControllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteUserCoupon(Guid id)
         {
-            var userCoupon = await _context.UserCoupons.FindAsync(id);
+            var userCoupon = await _bll.UsersCoupon.FirstOrDefaultAsync(id);
             if (userCoupon == null)
             {
                 return NotFound();
             }
 
-            _context.UserCoupons.Remove(userCoupon);
-            await _context.SaveChangesAsync();
+            _bll.UsersCoupon.Remove(userCoupon);
+            await _bll.SaveChangesAsync();
 
             return NoContent();
         }
 
-        private bool UserCouponExists(Guid id)
+        private async Task<bool> UserCouponExists(Guid id)
         {
-            return _context.UserCoupons.Any(e => e.Id == id);
+            return await _bll.UsersCoupon.ExistsAsync( id);
         }
     }
 }

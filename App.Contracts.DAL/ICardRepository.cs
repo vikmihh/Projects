@@ -1,12 +1,16 @@
-﻿using App.Domain;
+﻿using App.DTO;
 using Base.Contracts.DAL;
 
 namespace App.Contracts.DAL;
 
-public interface ICardRepository : IEntityRepository<Card>
+public interface ICardRepository : IEntityRepository<App.DTO.Card>, ICardRepositoryCustom<App.DTO.Card>
 {
-    Task<IEnumerable<Card>> GetAllByFullNameAsync(string fullName, bool noTracking = true);
-    Task<IEnumerable<Card>> GetNonExpiredByFullNameAsync(string fullName, bool noTracking = true);
+}
+
+public interface ICardRepositoryCustom<TEntity>
+{
+    Task<IEnumerable<TEntity>> GetAllByFullNameAsync(string fullName, bool noTracking = true);
+    Task<IEnumerable<TEntity>> GetNonExpiredByFullNameAsync(string fullName, bool noTracking = true);
     
-    Task<IEnumerable<Card>> GetAllAsync(Guid userId, bool noTracking = true);
+    Task<IEnumerable<TEntity>> GetAllAsync(Guid userId, bool noTracking = true);
 }

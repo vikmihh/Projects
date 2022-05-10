@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using App.Contracts.BLL;
 using App.Contracts.DAL;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -16,29 +17,28 @@ namespace WebApp.ApiControllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    // [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class CardsController : ControllerBase
     {
-        private readonly IAppUnitOfWork _uow;
+        private readonly IAppBLL _bll;
 
-        public CardsController(IAppUnitOfWork uow)
+        public CardsController(IAppBLL bll)
         {
-            _uow = uow;
+            _bll = bll;
         }
 
         // GET: api/Cards
         [HttpGet]
-        //Task<ActionResult<IEnumerable<Card>>>
-        public async Task<IEnumerable<Card>> GetCards()
+        public async Task<IEnumerable<App.BLL.DTO.Card>> GetCards()
         {
-            return await _uow.Cards.GetAllAsync();
+            return await _bll.Cards.GetAllAsync();
         }
 
         // GET: api/Cards/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Card>> GetCard(Guid id)
+        public async Task<ActionResult<App.BLL.DTO.Card>> GetCard(Guid id)
         {
-            var card = await _uow.Cards.FirstOrDefaultAsync(id);
+            var card = await _bll.Cards.FirstOrDefaultAsync(id);
 
             if (card == null)
             {
@@ -51,18 +51,18 @@ namespace WebApp.ApiControllers
         // PUT: api/Cards/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutCard(Guid id, Card card)
+        public async Task<IActionResult> PutCard(Guid id, App.BLL.DTO.Card card)
         {
             if (id != card.Id)
             {
                 return BadRequest();
             }
 
-            _uow.Cards.Update(card);
+            _bll.Cards.Update(card);
 
             try
             {
-                await _uow.SaveChangesAsync();
+                await _bll.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -82,10 +82,10 @@ namespace WebApp.ApiControllers
         // POST: api/Cards
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Card>> PostCard(Card card)
+        public async Task<ActionResult<Card>> PostCard(App.BLL.DTO.Card card)
         {
-            _uow.Cards.Add(card);
-            await _uow.SaveChangesAsync();
+            _bll.Cards.Add(card);
+            await _bll.SaveChangesAsync();
 
             return CreatedAtAction("GetCard", new { id = card.Id }, card);
         }
@@ -94,21 +94,21 @@ namespace WebApp.ApiControllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCard(Guid id)
         {
-            var card = await _uow.Cards.FirstOrDefaultAsync(id);
+            var card = await _bll.Cards.FirstOrDefaultAsync(id);
             if (card == null)
             {
                 return NotFound();
             }
 
-            _uow.Cards.Remove(card);
-            await _uow.SaveChangesAsync();
+            _bll.Cards.Remove(card);
+            await _bll.SaveChangesAsync();
 
             return NoContent();
         }
 
         private async Task<bool> CardExists(Guid id)
         {
-            return await _uow.Cards.ExistsAsync( id);
+            return await _bll.Cards.ExistsAsync( id);
         }
         
     }

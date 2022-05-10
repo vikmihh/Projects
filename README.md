@@ -12,6 +12,7 @@ dotnet ef database drop --project App.DAL.EF --startup-project WebApp --context 
 
 MVC razor based
 
+dotnet aspnet-codegenerator controller -name ComponentTranslationsController       -actions -m  App.Domain.ComponentTranslation    -dc AppDbContext -outDir Areas\Admin\Controllers --useDefaultLayout --useAsyncActions --referenceScriptLibraries -f
 
 dotnet aspnet-codegenerator controller -name CardsController       -actions -m  App.Domain.Card    -dc AppDbContext -outDir Areas\Admin\Controllers --useDefaultLayout --useAsyncActions --referenceScriptLibraries -f
 
@@ -42,7 +43,7 @@ dotnet aspnet-codegenerator controller -name UserLogsController       -actions -
 
 WebApi 
 
-
+dotnet aspnet-codegenerator controller -name ComponentTranslationsController     -m App.Domain.ComponentTranslation     -actions -dc AppDbContext -outDir ApiControllers -api --useAsyncActions  -f
 dotnet aspnet-codegenerator controller -name CardsController     -m App.Domain.Card     -actions -dc AppDbContext -outDir ApiControllers -api --useAsyncActions  -f
 dotnet aspnet-codegenerator controller -name CoordinatesController     -m App.Domain.Coordinate     -actions -dc AppDbContext -outDir ApiControllers -api --useAsyncActions  -f
 dotnet aspnet-codegenerator controller -name CouponCategoriesController     -m App.Domain.CouponCategory     -actions -dc AppDbContext -outDir ApiControllers -api --useAsyncActions  -f

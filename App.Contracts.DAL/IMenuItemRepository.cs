@@ -3,7 +3,12 @@ using Base.Contracts.DAL;
 
 namespace App.Contracts.DAL;
 
-public interface IMenuItemRepository : IEntityRepository<MenuItem>
+public interface IMenuItemRepository : IEntityRepository<App.DTO.MenuItem>, IMenuItemRepositoryCustom<App.DTO.MenuItem>
 {
-    Task<IEnumerable<Card>> GetAllByFirstNameAsync(string firstName, bool noTracking = true);
+    
+}
+
+public interface IMenuItemRepositoryCustom<TEntity>
+{
+    Task<IEnumerable<TEntity>> GetAllByFirstNameAsync(string firstName, bool noTracking = true);
 }

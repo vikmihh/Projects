@@ -1,9 +1,14 @@
-﻿using App.Domain;
+﻿
 using Base.Contracts.DAL;
 
 namespace App.Contracts.DAL;
 
-public interface ICoordinateRepository : IEntityRepository<Coordinate>
+public interface ICoordinateRepository : IEntityRepository<App.DTO.Coordinate>, ICoordinateRepositoryCustom<App.DTO.Coordinate>
 {
-    Task<IEnumerable<Card>> GetAllByFirstNameAsync(string firstName, bool noTracking = true);
+   
+}
+
+public interface ICoordinateRepositoryCustom<TEntity>
+{
+    Task<IEnumerable<TEntity>> GetAllByFirstNameAsync(string firstName, bool noTracking = true);
 }

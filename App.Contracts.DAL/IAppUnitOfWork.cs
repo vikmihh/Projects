@@ -17,4 +17,5 @@ public interface IAppUnitOfWork : IUnitOfWork
     IUserCategoryRepository UsersCategory { get; }
     IUserCouponRepository UsersCoupon { get; }
     IUserInCategoryRepository UsersInCategory { get; }
+    IComponentTranslationRepository ComponentTranslations { get; }
 }

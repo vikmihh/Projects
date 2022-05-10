@@ -33,7 +33,7 @@ public class LangStr : Dictionary<string, string>
         {
             return this[culture];
         }
-        
+         
         var neutralCulture = culture.Split("-")[0];
         if (ContainsKey(neutralCulture))
         {

@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using App.Contracts.BLL;
 using App.Contracts.DAL;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -16,28 +17,28 @@ namespace WebApp.ApiControllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    // [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class CoordinatesController : ControllerBase
     {
-        private readonly IAppUnitOfWork _uow;
+        private readonly IAppBLL _bll;
 
-        public CoordinatesController(IAppUnitOfWork uow)
+        public CoordinatesController(IAppBLL bll)
         {
-            _uow = uow;
+            _bll = bll;
         }
 
         // GET: api/Coordinates
         [HttpGet]
-        public async Task<IEnumerable<Coordinate>> GetCoordinates()
+        public async Task<IEnumerable<App.BLL.DTO.Coordinate>> GetCoordinates()
         {
-            return await _uow.Coordinates.GetAllAsync();
+            return await _bll.Coordinates.GetAllAsync();
         }
 
         // GET: api/Coordinates/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Coordinate>> GetCoordinate(Guid id)
+        public async Task<ActionResult<App.BLL.DTO.Coordinate>> GetCoordinate(Guid id)
         {
-            var coordinate = await _uow.Coordinates.FirstOrDefaultAsync(id);
+            var coordinate = await _bll.Coordinates.FirstOrDefaultAsync(id);
 
             if (coordinate == null)
             {
@@ -50,18 +51,18 @@ namespace WebApp.ApiControllers
         // PUT: api/Coordinates/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutCoordinate(Guid id, Coordinate coordinate)
+        public async Task<IActionResult> PutCoordinate(Guid id, App.BLL.DTO.Coordinate coordinate)
         {
             if (id != coordinate.Id)
             {
                 return BadRequest();
             }
 
-            _uow.Coordinates.Update(coordinate);
+            _bll.Coordinates.Update(coordinate);
 
             try
             {
-                await _uow.SaveChangesAsync();
+                await _bll.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -81,10 +82,10 @@ namespace WebApp.ApiControllers
         // POST: api/Coordinates
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Coordinate>> PostCoordinate(Coordinate coordinate)
+        public async Task<ActionResult<Coordinate>> PostCoordinate(App.BLL.DTO.Coordinate coordinate)
         {
-            _uow.Coordinates.Add(coordinate);
-            await _uow.SaveChangesAsync();
+            _bll.Coordinates.Add(coordinate);
+            await _bll.SaveChangesAsync();
 
             return CreatedAtAction("GetCoordinate", new { id = coordinate.Id }, coordinate);
         }
@@ -93,21 +94,21 @@ namespace WebApp.ApiControllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCoordinate(Guid id)
         {
-            var coordinate = await _uow.Coordinates.FirstOrDefaultAsync(id);
+            var coordinate = await _bll.Coordinates.FirstOrDefaultAsync(id);
             if (coordinate == null)
             {
                 return NotFound();
             }
 
-            _uow.Coordinates.Remove(coordinate);
-            await _uow.SaveChangesAsync();
+            _bll.Coordinates.Remove(coordinate);
+            await _bll.SaveChangesAsync();
 
             return NoContent();
         }
 
         private async Task<bool> CoordinateExists(Guid id)
         {
-            return await _uow.Coordinates.ExistsAsync( id);
+            return await _bll.Coordinates.ExistsAsync( id);
         }
     }
 }

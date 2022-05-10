@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using App.Contracts.BLL;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -13,27 +14,28 @@ namespace WebApp.ApiControllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    // [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class UserLogsController : ControllerBase
     {
-        private readonly AppDbContext _context;
+        private readonly IAppBLL _bll;
 
-        public UserLogsController(AppDbContext context)
+        public UserLogsController(IAppBLL bll)
         {
-            _context = context;
+            _bll = bll;
         }
 
         // GET: api/UserLogs
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<UserLog>>> GetUserLogs()
+        public async Task<IEnumerable<App.BLL.DTO.UserLog>> GetUserLogs()
         {
-            return await _context.UserLogs.ToListAsync();
+            return await _bll.UserLogs.GetAllAsync();
         }
 
         // GET: api/UserLogs/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<UserLog>> GetUserLog(Guid id)
+        public async Task<ActionResult<App.BLL.DTO.UserLog>> GetUserLog(Guid id)
         {
-            var userLog = await _context.UserLogs.FindAsync(id);
+            var userLog = await _bll.UserLogs.FirstOrDefaultAsync(id);
 
             if (userLog == null)
             {
@@ -46,22 +48,22 @@ namespace WebApp.ApiControllers
         // PUT: api/UserLogs/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutUserLog(Guid id, UserLog userLog)
+        public async Task<IActionResult> PutUserLog(Guid id, App.BLL.DTO.UserLog userLog)
         {
             if (id != userLog.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(userLog).State = EntityState.Modified;
+            _bll.UserLogs.Update(userLog);
 
             try
             {
-                await _context.SaveChangesAsync();
+                await _bll.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!UserLogExists(id))
+                if (!await UserLogExists(id))
                 {
                     return NotFound();
                 }
@@ -77,10 +79,10 @@ namespace WebApp.ApiControllers
         // POST: api/UserLogs
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<UserLog>> PostUserLog(UserLog userLog)
+        public async Task<ActionResult<UserLog>> PostUserLog(App.BLL.DTO.UserLog userLog)
         {
-            _context.UserLogs.Add(userLog);
-            await _context.SaveChangesAsync();
+            _bll.UserLogs.Add(userLog);
+            await _bll.SaveChangesAsync();
 
             return CreatedAtAction("GetUserLog", new { id = userLog.Id }, userLog);
         }
@@ -89,21 +91,21 @@ namespace WebApp.ApiControllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteUserLog(Guid id)
         {
-            var userLog = await _context.UserLogs.FindAsync(id);
+            var userLog = await _bll.UserLogs.FirstOrDefaultAsync(id);
             if (userLog == null)
             {
                 return NotFound();
             }
 
-            _context.UserLogs.Remove(userLog);
-            await _context.SaveChangesAsync();
+            _bll.UserLogs.Remove(userLog);
+            await _bll.SaveChangesAsync();
 
             return NoContent();
         }
 
-        private bool UserLogExists(Guid id)
+        private async Task<bool> UserLogExists(Guid id)
         {
-            return _context.UserLogs.Any(e => e.Id == id);
+            return await _bll.UserLogs.ExistsAsync( id);
         }
     }
 }

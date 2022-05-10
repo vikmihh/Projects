@@ -13,12 +13,17 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\App.BLL.DTO\App.BLL.DTO.csproj" />
+      <ProjectReference Include="..\App.BLL\App.BLL.csproj" />
       <ProjectReference Include="..\App.DAL.EF\App.DAL.EF.csproj" />
       <ProjectReference Include="..\Base.Extensions\Base.Extensions.csproj" />
       <ProjectReference Include="..\Base.Resources\Base.Resources.csproj" />
     </ItemGroup>
 
     <ItemGroup>
+      <PackageReference Include="AutoMapper" Version="11.0.1" />
+      <PackageReference Include="AutoMapper.EF6" Version="2.1.1" />
+      <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
       <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.4" />
       <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="6.0.4" />
       <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.4" />
@@ -35,6 +40,7 @@
 
     <ItemGroup>
       <Folder Include="Areas\Admin\Controllers" />
+      <Folder Include="Helpers" />
     </ItemGroup>
 
     <ItemGroup>

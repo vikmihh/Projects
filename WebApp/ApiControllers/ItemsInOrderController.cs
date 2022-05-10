@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using App.Contracts.BLL;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -13,27 +14,28 @@ namespace WebApp.ApiControllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    // [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class ItemsInOrderController : ControllerBase
     {
-        private readonly AppDbContext _context;
+        private readonly IAppBLL _bll;
 
-        public ItemsInOrderController(AppDbContext context)
+        public ItemsInOrderController(IAppBLL bll)
         {
-            _context = context;
+            _bll = bll;
         }
 
         // GET: api/ItemsInOrder
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ItemInOrder>>> GetItemsInOrder()
+        public async Task<IEnumerable<App.BLL.DTO.ItemInOrder>> GetItemsInOrder()
         {
-            return await _context.ItemsInOrder.ToListAsync();
+            return await _bll.ItemsInOrder.GetAllAsync();
         }
 
         // GET: api/ItemsInOrder/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<ItemInOrder>> GetItemInOrder(Guid id)
+        public async Task<ActionResult<App.BLL.DTO.ItemInOrder>> GetItemInOrder(Guid id)
         {
-            var itemInOrder = await _context.ItemsInOrder.FindAsync(id);
+            var itemInOrder = await _bll.ItemsInOrder.FirstOrDefaultAsync(id);
 
             if (itemInOrder == null)
             {
@@ -46,22 +48,22 @@ namespace WebApp.ApiControllers
         // PUT: api/ItemsInOrder/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutItemInOrder(Guid id, ItemInOrder itemInOrder)
+        public async Task<IActionResult> PutItemInOrder(Guid id, App.BLL.DTO.ItemInOrder itemInOrder)
         {
             if (id != itemInOrder.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(itemInOrder).State = EntityState.Modified;
+            _bll.ItemsInOrder.Update(itemInOrder);
 
             try
             {
-                await _context.SaveChangesAsync();
+                await _bll.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!ItemInOrderExists(id))
+                if (!await ItemInOrderExists(id))
                 {
                     return NotFound();
                 }
@@ -77,10 +79,10 @@ namespace WebApp.ApiControllers
         // POST: api/ItemsInOrder
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<ItemInOrder>> PostItemInOrder(ItemInOrder itemInOrder)
+        public async Task<ActionResult<ItemInOrder>> PostItemInOrder(App.BLL.DTO.ItemInOrder itemInOrder)
         {
-            _context.ItemsInOrder.Add(itemInOrder);
-            await _context.SaveChangesAsync();
+            _bll.ItemsInOrder.Add(itemInOrder);
+            await _bll.SaveChangesAsync();
 
             return CreatedAtAction("GetItemInOrder", new { id = itemInOrder.Id }, itemInOrder);
         }
@@ -89,21 +91,21 @@ namespace WebApp.ApiControllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteItemInOrder(Guid id)
         {
-            var itemInOrder = await _context.ItemsInOrder.FindAsync(id);
+            var itemInOrder = await _bll.ItemsInOrder.FirstOrDefaultAsync(id);
             if (itemInOrder == null)
             {
                 return NotFound();
             }
 
-            _context.ItemsInOrder.Remove(itemInOrder);
-            await _context.SaveChangesAsync();
+            _bll.ItemsInOrder.Remove(itemInOrder);
+            await _bll.SaveChangesAsync();
 
             return NoContent();
         }
 
-        private bool ItemInOrderExists(Guid id)
+        private async Task<bool> ItemInOrderExists(Guid id)
         {
-            return _context.ItemsInOrder.Any(e => e.Id == id);
+            return await _bll.ItemsInOrder.ExistsAsync( id);
         }
     }
 }

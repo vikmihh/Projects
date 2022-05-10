@@ -1,16 +1,17 @@
 ﻿using App.Contracts.DAL;
-using App.Domain;
+using App.DAL.EF.Mappers;
 using Base.DAL.EF;
+using Base.Contracts;
 
 namespace App.DAL.EF.Repositories;
 
-public class CouponCategoryRepository : BaseEntityRepository<CouponCategory, AppDbContext>, ICouponCategoryRepository
+public class CouponCategoryRepository : BaseEntityRepository<App.DTO.CouponCategory, App.Domain.CouponCategory, AppDbContext>, ICouponCategoryRepository
 {
-    public CouponCategoryRepository(AppDbContext dbContext) : base(dbContext)
+    public CouponCategoryRepository(AppDbContext dbContext, IMapper<App.DTO.CouponCategory, App.Domain.CouponCategory> mapper) : base(dbContext, mapper)
     {
     }
 
-    public Task<IEnumerable<Card>> GetAllByFirstNameAsync(string firstName, bool noTracking = true)
+    public Task<IEnumerable<App.DTO.CouponCategory>> GetAllByFirstNameAsync(string firstName, bool noTracking = true)
     {
         throw new NotImplementedException();
     }

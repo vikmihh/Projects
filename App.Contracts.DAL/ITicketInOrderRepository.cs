@@ -3,7 +3,12 @@ using Base.Contracts.DAL;
 
 namespace App.Contracts.DAL;
 
-public interface ITicketInOrderRepository : IEntityRepository<TicketInOrder>
+public interface ITicketInOrderRepository : IEntityRepository<App.DTO.TicketInOrder>, ITicketInOrderRepositoryCustom<App.DTO.TicketInOrder>
 {
-    Task<IEnumerable<Card>> GetAllByFirstNameAsync(string firstName, bool noTracking = true);
+   
+}
+
+public interface ITicketInOrderRepositoryCustom<TEntity>
+{
+    Task<IEnumerable<TEntity>> GetAllByFirstNameAsync(string firstName, bool noTracking = true);
 }

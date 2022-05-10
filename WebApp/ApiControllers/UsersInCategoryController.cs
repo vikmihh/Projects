@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using App.Contracts.BLL;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -13,27 +14,28 @@ namespace WebApp.ApiControllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    // [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class UsersInCategoryController : ControllerBase
     {
-        private readonly AppDbContext _context;
+        private readonly IAppBLL _bll;
 
-        public UsersInCategoryController(AppDbContext context)
+        public UsersInCategoryController(IAppBLL bll)
         {
-            _context = context;
+            _bll = bll;
         }
 
         // GET: api/UsersInCategory
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<UserInCategory>>> GetUsersInCategories()
+        public async Task<IEnumerable<App.BLL.DTO.UserInCategory>> GetUsersInCategories()
         {
-            return await _context.UsersInCategories.ToListAsync();
+            return await _bll.UsersInCategory.GetAllAsync();
         }
 
         // GET: api/UsersInCategory/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<UserInCategory>> GetUserInCategory(Guid id)
+        public async Task<ActionResult<App.BLL.DTO.UserInCategory>> GetUserInCategory(Guid id)
         {
-            var userInCategory = await _context.UsersInCategories.FindAsync(id);
+            var userInCategory = await _bll.UsersInCategory.FirstOrDefaultAsync(id);
 
             if (userInCategory == null)
             {
@@ -46,22 +48,22 @@ namespace WebApp.ApiControllers
         // PUT: api/UsersInCategory/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutUserInCategory(Guid id, UserInCategory userInCategory)
+        public async Task<IActionResult> PutUserInCategory(Guid id, App.BLL.DTO.UserInCategory userInCategory)
         {
             if (id != userInCategory.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(userInCategory).State = EntityState.Modified;
+            _bll.UsersInCategory.Update(userInCategory);
 
             try
             {
-                await _context.SaveChangesAsync();
+                await _bll.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!UserInCategoryExists(id))
+                if (!await UserInCategoryExists(id))
                 {
                     return NotFound();
                 }
@@ -77,10 +79,10 @@ namespace WebApp.ApiControllers
         // POST: api/UsersInCategory
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<UserInCategory>> PostUserInCategory(UserInCategory userInCategory)
+        public async Task<ActionResult<UserInCategory>> PostUserInCategory(App.BLL.DTO.UserInCategory userInCategory)
         {
-            _context.UsersInCategories.Add(userInCategory);
-            await _context.SaveChangesAsync();
+            _bll.UsersInCategory.Add(userInCategory);
+            await _bll.SaveChangesAsync();
 
             return CreatedAtAction("GetUserInCategory", new { id = userInCategory.Id }, userInCategory);
         }
@@ -89,21 +91,21 @@ namespace WebApp.ApiControllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteUserInCategory(Guid id)
         {
-            var userInCategory = await _context.UsersInCategories.FindAsync(id);
+            var userInCategory = await _bll.UsersInCategory.FirstOrDefaultAsync(id);
             if (userInCategory == null)
             {
                 return NotFound();
             }
 
-            _context.UsersInCategories.Remove(userInCategory);
-            await _context.SaveChangesAsync();
+            _bll.UsersInCategory.Remove(userInCategory);
+            await _bll.SaveChangesAsync();
 
             return NoContent();
         }
 
-        private bool UserInCategoryExists(Guid id)
+        private async Task<bool> UserInCategoryExists(Guid id)
         {
-            return _context.UsersInCategories.Any(e => e.Id == id);
+            return await _bll.UsersInCategory.ExistsAsync( id);
         }
     }
 }
