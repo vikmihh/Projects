@@ -15,15 +15,12 @@ public class CardService
     {
     }
 
-    public async Task<IEnumerable<Card>> GetAllByFullNameAsync(string fullName, bool noTracking = true)
+    public async Task<IEnumerable<Card>> GetAvailableCardsForUser(Guid userId)
     {
-        return (await Repository.GetAllByFullNameAsync(fullName, noTracking)).Select(x => Mapper.Map(x)!);
+        return (await Repository.GetAvailableCardsForUser(userId)).Select(x => Mapper.Map(x)!);
     }
-
-    public async Task<IEnumerable<Card>> GetNonExpiredByFullNameAsync(string fullName, bool noTracking = true)
-    {
-        return (await Repository.GetNonExpiredByFullNameAsync(fullName, noTracking)).Select(x => Mapper.Map(x)!);
-    }
+    
+    
 
     public async Task<IEnumerable<Card>> GetAllAsync(Guid userId, bool noTracking = true)
     {

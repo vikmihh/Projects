@@ -143,7 +143,7 @@ namespace WebApp.Areas.Admin.Controllers
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
             var componentTranslation = await _context.ComponentTranslations.FindAsync(id);
-            if (componentTranslation != null) _context.ComponentTranslations.Remove(componentTranslation);
+            _context.ComponentTranslations.Remove(componentTranslation);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }

@@ -12,8 +12,8 @@ public class CouponCategoryService : BaseEntityService<App.BLL.DTO.CouponCategor
     {
     }
 
-    public Task<IEnumerable<CouponCategory>> GetAllByFirstNameAsync(string firstName, bool noTracking = true)
+    public async Task SetUserCouponsByOrdersAmount(Guid userId, int ordersAmount)
     {
-        throw new NotImplementedException();
+        await Repository.SetUserCouponsByOrdersAmount(userId, ordersAmount);
     }
 }

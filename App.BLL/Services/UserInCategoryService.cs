@@ -12,8 +12,13 @@ public class UserInCategoryService : BaseEntityService<App.BLL.DTO.UserInCategor
     {
     }
 
-    public Task<IEnumerable<UserInCategory>> GetAllByFirstNameAsync(string firstName, bool noTracking = true)
+    public async Task<UserInCategory> UpdateCurrentUserInCategory(Guid userId, Guid userCategoryId)
     {
-        throw new NotImplementedException();
+        return Mapper.Map(await Repository.UpdateCurrentUserInCategory(userId, userCategoryId))!;
+    }
+
+    public async Task<UserInCategory?> GetCurrentUserInCategory(Guid userId)
+    {
+        return Mapper.Map(await Repository.GetCurrentUserInCategory(userId));
     }
 }

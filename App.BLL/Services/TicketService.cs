@@ -11,9 +11,5 @@ public class TicketService : BaseEntityService<App.BLL.DTO.Ticket, App.DTO.Ticke
     public TicketService(ITicketRepository repository, IMapper<BLL.DTO.Ticket, App.DTO.Ticket> mapper) : base(repository, mapper)
     {
     }
-
-    public Task<IEnumerable<Ticket>> GetAllByFirstNameAsync(string firstName, bool noTracking = true)
-    {
-        throw new NotImplementedException();
-    }
+    
 }

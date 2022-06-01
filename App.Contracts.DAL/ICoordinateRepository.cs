@@ -10,5 +10,6 @@ public interface ICoordinateRepository : IEntityRepository<App.DTO.Coordinate>, 
 
 public interface ICoordinateRepositoryCustom<TEntity>
 {
-    Task<IEnumerable<TEntity>> GetAllByFirstNameAsync(string firstName, bool noTracking = true);
+    Task<IEnumerable<TEntity>> GetCoordinatesByLocationId(Guid locationId, bool noTracking = true);
+    Task<IEnumerable<TEntity>> GetAvailableCoordinates();
 }

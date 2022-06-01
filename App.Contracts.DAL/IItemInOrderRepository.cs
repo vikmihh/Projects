@@ -10,5 +10,9 @@ public interface IItemInOrderRepository : IEntityRepository<App.DTO.ItemInOrder>
 
 public interface IItemInOrderRepositoryCustom<TEntity>
 {
-    Task<IEnumerable<TEntity>> GetAllByFirstNameAsync(string firstName, bool noTracking = true);
+    Task<decimal> CalculateItemsInOrderPrice(Guid orderId);
+    Task<TEntity> RemoveItemInOrderAsync(Guid itemInOrderId, Guid userId, int amount);
+    Task<TEntity> AddItemInCurrentOrderAsync(Guid userId, Guid menuItemId, int amount);
+
+    Task<IEnumerable<TEntity>> GetItemsInOrderByOrderId(Guid orderId, bool noTracking = true);
 }

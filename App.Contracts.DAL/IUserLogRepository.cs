@@ -1,5 +1,4 @@
-﻿using App.Domain;
-using Base.Contracts.DAL;
+﻿using Base.Contracts.DAL;
 
 namespace App.Contracts.DAL;
 
@@ -10,5 +9,7 @@ public interface IUserLogRepository : IEntityRepository<App.DTO.UserLog>, IUserL
 
 public interface IUserLogRepositoryCustom<TEntity>
 {
-    Task<IEnumerable<TEntity>> GetAllByFirstNameAsync(string firstName, bool noTracking = true);
+    // //Here must be transferred userId and ticketId and returned full instance of UserLog
+    Task<TEntity> RegisterEntrance(Guid ticketInOrderId, Guid userId, bool noTracking = true);
+
 }

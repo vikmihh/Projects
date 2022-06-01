@@ -16,7 +16,8 @@ public interface IAppBLL : IBLL
     ITicketInOrderService TicketsInOrder { get; }
     IUserLogService UserLogs { get; }
     IUserCategoryService UsersCategory { get; }
-    IUserCouponService UsersCoupon { get; }
+    IUserCouponService UsersCoupon { get; } 
     IUserInCategoryService UsersInCategory { get; }
     IComponentTranslationService ComponentTranslations { get; }
+    ICoordinateLocationService CoordinatesLocation { get; }
 }

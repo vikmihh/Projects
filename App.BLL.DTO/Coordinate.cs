@@ -4,14 +4,16 @@ using Base.Domain;
 
 namespace App.BLL.DTO;
 
-public class Coordinate : DomainEntityId
+public class Coordinate : DomainEntityMetaId
 {
-    public int Index { get; set; } = default!;
-    
     [MinLength(1)]
     [MaxLength(128)]
-    [DisplayName("Location")]
-    public string Location { get; set; } = default!;
+    [DisplayName("Index")]
+    public string Index { get; set; } = default!;
+    
+    public Guid CoordinateLocationId { get; set; }
+    public CoordinateLocation? CoordinateLocation { get; set; }
     
     public ICollection<Order>? Orders { get; set; }
+    
 }

@@ -12,8 +12,28 @@ public class TicketInOrderService : BaseEntityService<App.BLL.DTO.TicketInOrder,
     {
     }
 
-    public Task<IEnumerable<TicketInOrder>> GetAllByFirstNameAsync(string firstName, bool noTracking = true)
+    public async Task<decimal> CalculateTicketsInOrderPrice(Guid orderId)
     {
-        throw new NotImplementedException();
+        return await Repository.CalculateTicketsInOrderPrice(orderId);
+    }
+
+    public async Task<IEnumerable<TicketInOrder>> GetTicketsInOrderByOrderId(Guid orderId, bool noTracking = true)
+    {
+        return (await Repository.GetTicketsInOrderByOrderId(orderId)).Select(x=>Mapper.Map(x)!);
+    }
+
+    public async Task<App.BLL.DTO.TicketInOrder> AddTicketInCurrentOrderAsync(Guid userId, Guid ticketId)
+    {
+        return Mapper.Map(await Repository.AddTicketInCurrentOrderAsync(userId, ticketId))!;
+    }
+
+    public async Task<IEnumerable<App.BLL.DTO.TicketInOrder>> GetAvailableTicketsByUserId(Guid userId, bool noTracking = true)
+    {
+        return (await Repository.GetAvailableTicketsByUserId(userId)).Select(x=>Mapper.Map(x)!);
+    }
+
+    public async Task<App.BLL.DTO.TicketInOrder> ActivateTicketByTicketInOrderId(Guid ticketInOrderId, bool noTracking = true)
+    {
+        return Mapper.Map(await Repository.ActivateTicketByTicketInOrderId(ticketInOrderId))!;
     }
 }

@@ -4,12 +4,13 @@ using Base.Domain;
 
 namespace App.BLL.DTO;
 
-public class UserCategory : DomainEntityId
+public class UserCategory : DomainEntityMetaId
 {
     [MinLength(1)]
     [MaxLength(128)]
     [DisplayName("Category name")]
     public string CategoryName { get; set; } = default!;
+    public int OrdersAmount { get; set; } = default!;
     
     public ICollection<UserInCategory>? UsersInCategories { get; set; }
 }

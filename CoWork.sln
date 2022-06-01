@@ -18,6 +18,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionIt
 		.dockerignore = .dockerignore
 		.gitignore = .gitignore
 		README.md = README.md
+		..\CSharpHomework\Directory.Build.props = ..\CSharpHomework\Directory.Build.props
+		DockerFile = DockerFile
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.DAL.EF", "App.DAL.EF\App.DAL.EF.csproj", "{D038B4F3-C5CA-4270-89A3-420D4AE47664}"
@@ -53,6 +55,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.BLL.DTO", "App.BLL.DTO\App.BLL.DTO.csproj", "{E93A83C8-D4E7-4BC7-B6C7-BFE6CDDDD48A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Contracts.BLL", "App.Contracts.BLL\App.Contracts.BLL.csproj", "{FD3715F3-E542-4487-B77F-FFC05EE5D487}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Public.DTO", "App.Public.DTO\App.Public.DTO.csproj", "{5C455231-03B4-4A96-AD3D-7118AF0278C3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Testing.WebApp", "Testing.WebApp\Testing.WebApp.csproj", "{8627AEFD-598C-4FB2-8615-7E3EDE0B2859}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -140,6 +146,14 @@ Global
 		{FD3715F3-E542-4487-B77F-FFC05EE5D487}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FD3715F3-E542-4487-B77F-FFC05EE5D487}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FD3715F3-E542-4487-B77F-FFC05EE5D487}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5C455231-03B4-4A96-AD3D-7118AF0278C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5C455231-03B4-4A96-AD3D-7118AF0278C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5C455231-03B4-4A96-AD3D-7118AF0278C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5C455231-03B4-4A96-AD3D-7118AF0278C3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8627AEFD-598C-4FB2-8615-7E3EDE0B2859}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8627AEFD-598C-4FB2-8615-7E3EDE0B2859}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8627AEFD-598C-4FB2-8615-7E3EDE0B2859}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8627AEFD-598C-4FB2-8615-7E3EDE0B2859}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{DBD48A97-4D6A-4063-94FB-6BEE051DB080} = {39D17FE1-D1A3-473E-86BD-6FF2DB055BBB}
@@ -162,5 +176,6 @@ Global
 		{552C3352-5CCA-4DB7-B5A9-4E9A0CEE026B} = {8A71B33A-ADCD-48C7-92D6-7F13F6C6D250}
 		{E93A83C8-D4E7-4BC7-B6C7-BFE6CDDDD48A} = {8A71B33A-ADCD-48C7-92D6-7F13F6C6D250}
 		{FD3715F3-E542-4487-B77F-FFC05EE5D487} = {8A71B33A-ADCD-48C7-92D6-7F13F6C6D250}
+		{5C455231-03B4-4A96-AD3D-7118AF0278C3} = {8A71B33A-ADCD-48C7-92D6-7F13F6C6D250}
 	EndGlobalSection
 EndGlobal

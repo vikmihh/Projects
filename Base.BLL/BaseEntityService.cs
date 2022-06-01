@@ -32,24 +32,24 @@ public class BaseEntityService<TBllEntity, TDalEntity,  TRepository, TKey> : IEn
         Repository = repository;
         Mapper = mapper;
     }
-    public TBllEntity Add(TBllEntity entity)
+    public TBllEntity Add(TBllEntity entity,TKey userId)
     {
-        return Mapper.Map(Repository.Add(Mapper.Map(entity)!))!;
+        return Mapper.Map(Repository.Add(Mapper.Map(entity)!, userId))!;
     }
 
-    public TBllEntity Update(TBllEntity entity)
+    public TBllEntity Update(TBllEntity entity, TKey userId)
     {
-        return Mapper.Map(Repository.Update(Mapper.Map(entity)!))!;
+        return Mapper.Map(Repository.Update(Mapper.Map(entity)!,userId))!;
     }
 
-    public TBllEntity Remove(TBllEntity entity)
+    public TBllEntity Remove(TBllEntity entity, TKey userId)
     {
-        return Mapper.Map(Repository.Remove(Mapper.Map(entity)!))!;
+        return Mapper.Map(Repository.Remove(Mapper.Map(entity)!,userId))!;
     }
 
-    public TBllEntity Remove(TKey id)
+    public TBllEntity Remove(TKey id, TKey userId)
     {
-        return Mapper.Map(Repository.Remove(id))!;
+        return Mapper.Map(Repository.Remove(id,userId))!;
     }
 
     public TBllEntity? FirstOrDefault(TKey id, bool noTracking = true)
@@ -82,8 +82,9 @@ public class BaseEntityService<TBllEntity, TDalEntity,  TRepository, TKey> : IEn
         return Repository.ExistsAsync(id);
     }
 
-    public async Task<TBllEntity> RemoveAsync(TKey id)
+    public async Task<TBllEntity> RemoveAsync(TKey id,TKey userId)
     {
-        return Mapper.Map(await Repository.RemoveAsync(id))!;
+     
+        return Mapper.Map(await Repository.RemoveAsync(id,userId))!;
     }
 }

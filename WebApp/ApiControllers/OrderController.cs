@@ -1,111 +1,145 @@
 #nullable disable
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using App.Contracts.BLL;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using App.DAL.EF;
-using App.Domain;
 
-namespace WebApp.ApiControllers
+using System.Diagnostics;
+using System.Net;
+using App.Contracts.BLL;
+using App.Public.DTO.v1;
+using App.Public.DTO.v1.Mappers;
+using AutoMapper;
+using Base.Extensions;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+
+namespace WebApplication.ApiControllers
 {
-    [Route("api/[controller]")]
+    /// <summary>
+    /// Order controller class. Has methods for creating and storing orders.
+    /// Order is accessible for regular user. Oder is a cart.
+    /// </summary>
+    [ApiVersion("1.0")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
-    // [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class OrderController : ControllerBase
     {
         private readonly IAppBLL _bll;
+        private readonly IMapper Mapper;
+        private OrderMapper _orderMapper;
 
-        public OrderController(IAppBLL bll)
+        /// <summary>
+        /// Order controller constructor
+        /// </summary>
+        /// <param name="bll"> Gives access to entities</param>
+        /// <param name="mapper">AutoMapper</param>
+        public OrderController(IAppBLL bll,IMapper mapper)
         {
             _bll = bll;
+            Mapper = mapper;
+            _orderMapper = new OrderMapper(Mapper);
         }
 
         // GET: api/Order
+        /// <summary>
+        ///  Get all user orders, that are already made
+        /// </summary>
+        /// <returns> List of  finished user orders</returns>
+        [Produces("application/json")]
+        [Consumes("application/json")]
+        [ProducesResponseType(typeof(IEnumerable<App.Public.DTO.v1.Order>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [HttpGet]
-        public async Task<IEnumerable<App.BLL.DTO.Order>> GetOrders()
+        public async Task<IEnumerable<App.Public.DTO.v1.Order>> GetOrders()
         {
-            return await _bll.Orders.GetAllAsync();
+            return (await _bll.Orders.GetAllOrdersByUserId(User.GetUserId())).Select(OrderMapper.MapToPublic);
+        }
+
+
+        // GET: api/Order/5
+
+        /// <summary>
+        /// Get an users current order, that is in process
+        /// </summary>
+        /// <returns> Versioned order entity</returns>
+        [Produces("application/json")]
+        [Consumes("application/json")]
+        [ProducesResponseType(typeof(App.Public.DTO.v1.Order), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [HttpGet("current")]
+        public async Task<ActionResult<App.Public.DTO.v1.Order>> GetCurrentOrderByUser()
+        {
+            var order = await _bll.Orders.GetCurrentOrderByUserIdAsync(User.GetUserId());
+            return OrderMapper.MapToPublic(order);
         }
 
         // GET: api/Order/5
+        /// <summary>
+        /// Get an order by id
+        /// </summary>
+        /// <param name="id"> Id of the order that needs to be find</param>
+        /// <returns> Versioned order entity</returns>
+        [Produces("application/json")]
+        [Consumes("application/json")]
+        [ProducesResponseType(typeof(IEnumerable<App.Public.DTO.v1.Order>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [HttpGet("{id}")]
-        public async Task<ActionResult<App.BLL.DTO.Order>> GetOrder(Guid id)
+        public async Task<ActionResult<App.Public.DTO.v1.Order>> GetOrder(Guid id)
         {
             var order = await _bll.Orders.FirstOrDefaultAsync(id);
 
             if (order == null)
             {
-                return NotFound();
-            }
-
-            return order;
-        }
-
-        // PUT: api/Order/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutOrder(Guid id, App.BLL.DTO.Order order)
-        {
-            if (id != order.Id)
-            {
-                return BadRequest();
-            }
-
-            _bll.Orders.Update(order);
-
-            try
-            {
-                await _bll.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!await OrderExists(id))
+                var errorResponse = new RestApiErrorResponse()
                 {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                    Type = "https://datatracker.ietf.org/doc/html/rfc7231#section-6.5.1",
+                    Title = "Order is not found!",
+                    Status = HttpStatusCode.NotFound,
+                    TraceId = Activity.Current?.Id ?? HttpContext.TraceIdentifier
+                };
+                return NotFound(errorResponse);
             }
 
-            return NoContent();
+            return OrderMapper.MapToPublic(order);
         }
-
+        
         // POST: api/Order
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<Order>> PostOrder(App.BLL.DTO.Order order)
+        /// <summary>
+        /// Confirm the order
+        /// </summary>
+        /// <param name="order"> Order object that needs to be confirmed</param>
+        /// <returns> Versioned confirmed order entity</returns>
+        [Produces("application/json")]
+        [Consumes("application/json")]
+        [ProducesResponseType(typeof(App.Public.DTO.v1.Order), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [HttpPost("proceedOrder")]
+        public async Task<ActionResult<App.Public.DTO.v1.Order>> ProceedOrderConfirmation(App.Public.DTO.v1.Order order)
         {
-            _bll.Orders.Add(order);
+           var ord= await _bll.Orders.ProceedOrderConfirmation(OrderMapper.MapToBll(order), User.GetUserId());
             await _bll.SaveChangesAsync();
-
-            return CreatedAtAction("GetOrder", new { id = order.Id }, order);
+ 
+            return CreatedAtAction(
+                "ProceedOrderConfirmation",
+                new
+                {
+                    id = order.Id,
+                    version = HttpContext.GetRequestedApiVersion()!.ToString()
+                },
+                OrderMapper.MapToPublic(ord));
         }
 
-        // DELETE: api/Order/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteOrder(Guid id)
-        {
-            var order = await _bll.Orders.FirstOrDefaultAsync(id);
-            if (order == null)
-            {
-                return NotFound();
-            }
-
-            _bll.Orders.Remove(order);
-            await _bll.SaveChangesAsync();
-
-            return NoContent();
-        }
-
+        /// <summary>
+        /// Check if the order exists
+        /// </summary>
+        /// <param name="id"> Id of order</param>
+        /// <returns> True if order exists</returns>
+        [Produces("application/json")]
+        [Consumes("application/json")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         private async Task<bool> OrderExists(Guid id)
         {
-            return await _bll.Orders.ExistsAsync( id);
+            return await _bll.Orders.ExistsAsync(id);
         }
     }
 }

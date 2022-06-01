@@ -12,9 +12,5 @@ public class ItemCategoryService : BaseEntityService<App.BLL.DTO.ItemCategory, A
     public ItemCategoryService(IItemCategoryRepository repository, IMapper<BLL.DTO.ItemCategory, App.DTO.ItemCategory> mapper) : base(repository, mapper)
     {
     }
-
-    public Task<IEnumerable<ItemCategory>> GetAllByFirstNameAsync(string firstName, bool noTracking = true)
-    {
-        throw new NotImplementedException();
-    }
+    
 }

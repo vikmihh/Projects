@@ -18,4 +18,6 @@ public class MenuItem : DomainEntityMetaId
     public decimal Price { get; set; } = default!;
     
     public ICollection<ItemInOrder>? ItemsInOrder { get; set; }
+    public Guid ItemCategoryId { get; set; }
+    public ItemCategory? ItemCategory { get; set; }
 }

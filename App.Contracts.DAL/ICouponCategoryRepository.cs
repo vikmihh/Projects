@@ -10,5 +10,7 @@ public interface ICouponCategoryRepository : IEntityRepository<App.DTO.CouponCat
 
 public interface ICouponCategoryRepositoryCustom<TEntity>
 {
-    Task<IEnumerable<TEntity>> GetAllByFirstNameAsync(string firstName, bool noTracking = true);
+
+    Task SetUserCouponsByOrdersAmount(Guid userId, int ordersAmount);
+
 }

@@ -56,13 +56,11 @@ namespace WebApp.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Name,Description,CreatedBy,CreatedAt,UpdatedAt,UpdatedBy,Id")] CouponCategory couponCategory)
+        public async Task<IActionResult> Create([Bind("Name,Description,Discount,OrdersAmount,CreatedBy,CreatedAt,UpdatedAt,UpdatedBy,Id")] CouponCategory couponCategory)
         {
             if (ModelState.IsValid)
             {
                 couponCategory.Id = Guid.NewGuid();
-                couponCategory.CreatedAt = DateTime.SpecifyKind(couponCategory.CreatedAt, DateTimeKind.Utc);
-                couponCategory.UpdatedBy = DateTime.SpecifyKind(couponCategory.UpdatedBy, DateTimeKind.Utc);
                 _context.Add(couponCategory);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

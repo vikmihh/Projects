@@ -3,11 +3,11 @@ using Base.Domain;
 
 namespace App.Domain;
 
-public class ComponentTranslation : DomainEntityId
+public class ComponentTranslation : DomainEntityMetaId
 {
     //et-EE
     //et-RUS
     [Column(TypeName = "jsonb")]
-    public LangStr Translation { get; set; } = new();
+    public string Translation { get; set; }  = default!;
     public string ComponentName { get; set; } = default!;
 } 

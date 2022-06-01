@@ -10,5 +10,7 @@ public interface IUserInCategoryRepository : IEntityRepository<App.DTO.UserInCat
 
 public interface IUserInCategoryRepositoryCustom<TEntity>
 {
-    Task<IEnumerable<TEntity>> GetAllByFirstNameAsync(string firstName, bool noTracking = true);
+    Task<TEntity> UpdateCurrentUserInCategory(Guid userId, Guid userCategoryId);
+    Task<TEntity?> GetCurrentUserInCategory(Guid userId);
+
 }

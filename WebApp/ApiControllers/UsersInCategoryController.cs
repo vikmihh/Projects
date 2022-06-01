@@ -1,108 +1,77 @@
 #nullable disable
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using App.Contracts.BLL;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using App.DAL.EF;
-using App.Domain;
 
-namespace WebApp.ApiControllers
+using System.Diagnostics;
+using System.Net;
+using App.Contracts.BLL;
+using App.Public.DTO.v1;
+using App.Public.DTO.v1.Mappers;
+using AutoMapper;
+using Base.Extensions;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+
+namespace WebApplication.ApiControllers
 {
-    [Route("api/[controller]")]
+    /// <summary>
+    /// Users in category controller class. Has methods for creating and storing users categories.
+    /// </summary>
+    [ApiVersion("1.0")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
-    // [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class UsersInCategoryController : ControllerBase
     {
         private readonly IAppBLL _bll;
+        private readonly IMapper Mapper;
+        private UserInCategoryMapper _userInCategoryMapper;
 
-        public UsersInCategoryController(IAppBLL bll)
+        /// <summary>
+        /// Users in category controller constructor
+        /// </summary>
+        /// <param name="bll"> Gives access to entities</param>
+        /// <param name="mapper">AutoMapper</param>
+        public UsersInCategoryController(IAppBLL bll, IMapper mapper)
         {
             _bll = bll;
-        }
-
-        // GET: api/UsersInCategory
-        [HttpGet]
-        public async Task<IEnumerable<App.BLL.DTO.UserInCategory>> GetUsersInCategories()
-        {
-            return await _bll.UsersInCategory.GetAllAsync();
+            Mapper = mapper;
+            _userInCategoryMapper = new UserInCategoryMapper(Mapper);
         }
 
         // GET: api/UsersInCategory/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<App.BLL.DTO.UserInCategory>> GetUserInCategory(Guid id)
+        /// <summary>
+        /// Get an users category if that exists
+        /// </summary>
+        /// <returns> Versioned user in category entity</returns>
+        [Produces("application/json")]
+        [Consumes("application/json")]
+        [ProducesResponseType(typeof(App.Public.DTO.v1.UserInCategory), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [HttpGet("current")]
+        public async Task<ActionResult<App.Public.DTO.v1.UserInCategory>> GetUserInCategory()
         {
-            var userInCategory = await _bll.UsersInCategory.FirstOrDefaultAsync(id);
+            var userInCategory = await _bll.UsersInCategory.GetCurrentUserInCategory(User.GetUserId());
 
-            if (userInCategory == null)
+            if (userInCategory != null) return UserInCategoryMapper.MapToPublic(userInCategory);
+            var errorResponse = new RestApiErrorResponse()
             {
-                return NotFound();
-            }
-
-            return userInCategory;
+                Type = "https://datatracker.ietf.org/doc/html/rfc7231#section-6.5.1",
+                Title = "current user in category is not found!",
+                Status = HttpStatusCode.NotFound,
+                TraceId = Activity.Current?.Id ?? HttpContext.TraceIdentifier
+            };
+            return NotFound(errorResponse);
         }
 
-        // PUT: api/UsersInCategory/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutUserInCategory(Guid id, App.BLL.DTO.UserInCategory userInCategory)
-        {
-            if (id != userInCategory.Id)
-            {
-                return BadRequest();
-            }
-
-            _bll.UsersInCategory.Update(userInCategory);
-
-            try
-            {
-                await _bll.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!await UserInCategoryExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
-
-        // POST: api/UsersInCategory
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<UserInCategory>> PostUserInCategory(App.BLL.DTO.UserInCategory userInCategory)
-        {
-            _bll.UsersInCategory.Add(userInCategory);
-            await _bll.SaveChangesAsync();
-
-            return CreatedAtAction("GetUserInCategory", new { id = userInCategory.Id }, userInCategory);
-        }
-
-        // DELETE: api/UsersInCategory/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteUserInCategory(Guid id)
-        {
-            var userInCategory = await _bll.UsersInCategory.FirstOrDefaultAsync(id);
-            if (userInCategory == null)
-            {
-                return NotFound();
-            }
-
-            _bll.UsersInCategory.Remove(userInCategory);
-            await _bll.SaveChangesAsync();
-
-            return NoContent();
-        }
-
+        /// <summary>
+        /// Check if user in category exists
+        /// </summary>
+        /// <param name="id"> Id of user in category</param>
+        /// <returns> True if user in category exists</returns>
+        [Produces("application/json")]
+        [Consumes("application/json")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         private async Task<bool> UserInCategoryExists(Guid id)
         {
             return await _bll.UsersInCategory.ExistsAsync( id);

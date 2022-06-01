@@ -24,7 +24,7 @@ namespace WebApp.Areas.Admin.Controllers
         // GET: Admin/UsersCoupon
         public async Task<IActionResult> Index()
         {
-            var appDbContext = _context.UserCoupons.Include(u => u.AppUser);
+            var appDbContext = _context.UserCoupons.Include(u => u.AppUser).Include(u => u.CouponCategory);
             return View(await appDbContext.ToListAsync());
         }
 
@@ -38,6 +38,7 @@ namespace WebApp.Areas.Admin.Controllers
 
             var userCoupon = await _context.UserCoupons
                 .Include(u => u.AppUser)
+                .Include(u => u.CouponCategory)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (userCoupon == null)
             {
@@ -50,7 +51,9 @@ namespace WebApp.Areas.Admin.Controllers
         // GET: Admin/UsersCoupon/Create
         public IActionResult Create()
         {
-            ViewData["AppUserId"] = new SelectList(_context.Users, "Id", "Id");
+            ViewData["AppUserId"] = new SelectList(_context.Users, "Id", "FirstName");
+            ViewData["CouponCategoryId"] = new SelectList(_context.CouponCategories, "Id", "Description");
+            ViewData["UserInCategoryId"] = new SelectList(_context.UsersInCategories, "Id", "Id");
             return View();
         }
 
@@ -59,7 +62,7 @@ namespace WebApp.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CouponNr,PromoCode,IsUsed,Discount,ValidFrom,ValidUntil,AppUserId,CreatedBy,CreatedAt,UpdatedAt,UpdatedBy,Id")] UserCoupon userCoupon)
+        public async Task<IActionResult> Create([Bind("CouponNr,PromoCode,IsUsed,Discount,AppUserId,CouponCategoryId,UserInCategoryId,CreatedBy,CreatedAt,UpdatedAt,UpdatedBy,Id")] UserCoupon userCoupon)
         {
             if (ModelState.IsValid)
             {
@@ -68,7 +71,8 @@ namespace WebApp.Areas.Admin.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["AppUserId"] = new SelectList(_context.Users, "Id", "Id", userCoupon.AppUserId);
+            ViewData["AppUserId"] = new SelectList(_context.Users, "Id", "FirstName", userCoupon.AppUserId);
+            ViewData["CouponCategoryId"] = new SelectList(_context.CouponCategories, "Id", "Description", userCoupon.CouponCategoryId);
             return View(userCoupon);
         }
 
@@ -85,7 +89,8 @@ namespace WebApp.Areas.Admin.Controllers
             {
                 return NotFound();
             }
-            ViewData["AppUserId"] = new SelectList(_context.Users, "Id", "Id", userCoupon.AppUserId);
+            ViewData["AppUserId"] = new SelectList(_context.Users, "Id", "FirstName", userCoupon.AppUserId);
+            ViewData["CouponCategoryId"] = new SelectList(_context.CouponCategories, "Id", "Description", userCoupon.CouponCategoryId);
             return View(userCoupon);
         }
 
@@ -94,7 +99,7 @@ namespace WebApp.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("CouponNr,PromoCode,IsUsed,Discount,ValidFrom,ValidUntil,AppUserId,CreatedBy,CreatedAt,UpdatedAt,UpdatedBy,Id")] UserCoupon userCoupon)
+        public async Task<IActionResult> Edit(Guid id, [Bind("CouponNr,PromoCode,IsUsed,Discount,AppUserId,CouponCategoryId,UserInCategoryId,CreatedBy,CreatedAt,UpdatedAt,UpdatedBy,Id")] UserCoupon userCoupon)
         {
             if (id != userCoupon.Id)
             {
@@ -121,7 +126,8 @@ namespace WebApp.Areas.Admin.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["AppUserId"] = new SelectList(_context.Users, "Id", "Id", userCoupon.AppUserId);
+            ViewData["AppUserId"] = new SelectList(_context.Users, "Id", "FirstName", userCoupon.AppUserId);
+            ViewData["CouponCategoryId"] = new SelectList(_context.CouponCategories, "Id", "Description", userCoupon.CouponCategoryId);
             return View(userCoupon);
         }
 
@@ -135,6 +141,7 @@ namespace WebApp.Areas.Admin.Controllers
 
             var userCoupon = await _context.UserCoupons
                 .Include(u => u.AppUser)
+                .Include(u => u.CouponCategory)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (userCoupon == null)
             {

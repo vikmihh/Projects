@@ -11,9 +11,13 @@ public class MenuItemService : BaseEntityService<App.BLL.DTO.MenuItem, App.DTO.M
     public MenuItemService(IMenuItemRepository repository, IMapper<BLL.DTO.MenuItem, App.DTO.MenuItem> mapper) : base(repository, mapper)
     {
     }
-
-    public Task<IEnumerable<MenuItem>> GetAllByFirstNameAsync(string firstName, bool noTracking = true)
+    public async Task<IEnumerable<MenuItem>> GetAllByCategoryIdAsync(Guid id, bool noTracking = true)
     {
-        throw new NotImplementedException();
+        return (await Repository.GetAllByCategoryIdAsync(id)).Select(x => Mapper.Map(x)!);
+    }
+
+    public async Task<IEnumerable<MenuItem>> GetAvailableMenuItems()
+    {
+        return (await Repository.GetAvailableMenuItems()).Select(x => Mapper.Map(x)!);
     }
 }

@@ -83,4 +83,9 @@ public class AppBLL : BaseBLL<IAppUnitOfWork>, IAppBLL
     private IComponentTranslationService? _componentTranslations;
     public IComponentTranslationService ComponentTranslations => 
         _componentTranslations ??= new ComponentTranslationService(UnitOfWork.ComponentTranslations, new ComponentTranslationMapper(_mapper));
+    
+    
+    private ICoordinateLocationService? _coordinatesLocation;
+    public ICoordinateLocationService CoordinatesLocation => 
+        _coordinatesLocation ??= new CoordinateLocationService(UnitOfWork.CoordinatesLocation, new CoordinateLocationMapper(_mapper));
 }

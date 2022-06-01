@@ -10,10 +10,10 @@ public class CouponCategory : DomainEntityMetaId
     [MaxLength(128)]
     [DisplayName("Name")]
     public string Name { get; set; } = default!;
+    public int OrdersAmount { get; set; } = default!;
     
-    [MaxLength(256)]
-    [DisplayName("Description")]
-    public string Description { get; set; } = default!;
+    
+    public decimal Discount { get; set; } = default!;
     
     public ICollection<UserCoupon>? UserCoupons { get; set; }
 }

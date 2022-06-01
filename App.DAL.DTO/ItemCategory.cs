@@ -4,7 +4,7 @@ using Base.Domain;
 
 namespace App.DTO;
 
-public class ItemCategory : DomainEntityId
+public class ItemCategory : DomainEntityMetaId
 {
     [MinLength(1)]
     [MaxLength(128)]

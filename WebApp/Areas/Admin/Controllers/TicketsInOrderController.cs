@@ -24,7 +24,8 @@ namespace WebApp.Areas.Admin.Controllers
         // GET: Admin/TicketsInOrder
         public async Task<IActionResult> Index()
         {
-            return View(await _context.TicketsInOrders.ToListAsync());
+            var appDbContext = _context.TicketsInOrders.Include(t => t.AppUser).Include(t => t.Order).Include(t => t.Ticket);
+            return View(await appDbContext.ToListAsync());
         }
 
         // GET: Admin/TicketsInOrder/Details/5
@@ -36,6 +37,9 @@ namespace WebApp.Areas.Admin.Controllers
             }
 
             var ticketInOrder = await _context.TicketsInOrders
+                .Include(t => t.AppUser)
+                .Include(t => t.Order)
+                .Include(t => t.Ticket)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (ticketInOrder == null)
             {
@@ -48,6 +52,9 @@ namespace WebApp.Areas.Admin.Controllers
         // GET: Admin/TicketsInOrder/Create
         public IActionResult Create()
         {
+            ViewData["AppUserId"] = new SelectList(_context.Users, "Id", "FirstName");
+            ViewData["OrderId"] = new SelectList(_context.Orders, "Id", "Description");
+            ViewData["TicketId"] = new SelectList(_context.Tickets, "Id", "Name");
             return View();
         }
 
@@ -56,7 +63,7 @@ namespace WebApp.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CreatedBy,CreatedAt,UpdatedAt,UpdatedBy,Id")] TicketInOrder ticketInOrder)
+        public async Task<IActionResult> Create([Bind("ValidFrom,ValidUntil,Activated,OrderId,TicketId,AppUserId,CreatedBy,CreatedAt,UpdatedAt,UpdatedBy,Id")] TicketInOrder ticketInOrder)
         {
             if (ModelState.IsValid)
             {
@@ -65,6 +72,9 @@ namespace WebApp.Areas.Admin.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["AppUserId"] = new SelectList(_context.Users, "Id", "FirstName", ticketInOrder.AppUserId);
+            ViewData["OrderId"] = new SelectList(_context.Orders, "Id", "Description", ticketInOrder.OrderId);
+            ViewData["TicketId"] = new SelectList(_context.Tickets, "Id", "Name", ticketInOrder.TicketId);
             return View(ticketInOrder);
         }
 
@@ -81,6 +91,9 @@ namespace WebApp.Areas.Admin.Controllers
             {
                 return NotFound();
             }
+            ViewData["AppUserId"] = new SelectList(_context.Users, "Id", "FirstName", ticketInOrder.AppUserId);
+            ViewData["OrderId"] = new SelectList(_context.Orders, "Id", "Description", ticketInOrder.OrderId);
+            ViewData["TicketId"] = new SelectList(_context.Tickets, "Id", "Name", ticketInOrder.TicketId);
             return View(ticketInOrder);
         }
 
@@ -89,7 +102,7 @@ namespace WebApp.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("CreatedBy,CreatedAt,UpdatedAt,UpdatedBy,Id")] TicketInOrder ticketInOrder)
+        public async Task<IActionResult> Edit(Guid id, [Bind("ValidFrom,ValidUntil,Activated,OrderId,TicketId,AppUserId,CreatedBy,CreatedAt,UpdatedAt,UpdatedBy,Id")] TicketInOrder ticketInOrder)
         {
             if (id != ticketInOrder.Id)
             {
@@ -116,6 +129,9 @@ namespace WebApp.Areas.Admin.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["AppUserId"] = new SelectList(_context.Users, "Id", "FirstName", ticketInOrder.AppUserId);
+            ViewData["OrderId"] = new SelectList(_context.Orders, "Id", "Description", ticketInOrder.OrderId);
+            ViewData["TicketId"] = new SelectList(_context.Tickets, "Id", "Name", ticketInOrder.TicketId);
             return View(ticketInOrder);
         }
 
@@ -128,6 +144,9 @@ namespace WebApp.Areas.Admin.Controllers
             }
 
             var ticketInOrder = await _context.TicketsInOrders
+                .Include(t => t.AppUser)
+                .Include(t => t.Order)
+                .Include(t => t.Ticket)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (ticketInOrder == null)
             {

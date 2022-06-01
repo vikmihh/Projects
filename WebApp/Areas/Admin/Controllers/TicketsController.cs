@@ -56,7 +56,7 @@ namespace WebApp.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Name,Price,ValidFrom,ValidUntil,CreatedBy,CreatedAt,UpdatedAt,UpdatedBy,Id")] Ticket ticket)
+        public async Task<IActionResult> Create([Bind("Name,Price,DayRange,CreatedBy,CreatedAt,UpdatedAt,UpdatedBy,Id")] Ticket ticket)
         {
             if (ModelState.IsValid)
             {
@@ -89,7 +89,7 @@ namespace WebApp.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Name,Price,ValidFrom,ValidUntil,CreatedBy,CreatedAt,UpdatedAt,UpdatedBy,Id")] Ticket ticket)
+        public async Task<IActionResult> Edit(Guid id, [Bind("Name,Price,DayRange,CreatedBy,CreatedAt,UpdatedAt,UpdatedBy,Id")] Ticket ticket)
         {
             if (id != ticket.Id)
             {

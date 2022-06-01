@@ -10,5 +10,5 @@ public interface IItemCategoryRepository : IEntityRepository<App.DTO.ItemCategor
 
 public interface IItemCategoryRepositoryCustom<TEntity>
 {
-    Task<IEnumerable<TEntity>> GetAllByFirstNameAsync(string firstName, bool noTracking = true);
+    
 }

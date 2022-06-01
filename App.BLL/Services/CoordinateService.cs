@@ -11,9 +11,15 @@ public class CoordinateService : BaseEntityService<App.BLL.DTO.Coordinate, App.D
     public CoordinateService(ICoordinateRepository repository, IMapper<BLL.DTO.Coordinate, App.DTO.Coordinate> mapper) : base(repository, mapper)
     {
     }
+    
 
-    public Task<IEnumerable<Coordinate>> GetAllByFirstNameAsync(string firstName, bool noTracking = true)
+    public async Task<IEnumerable<Coordinate>> GetCoordinatesByLocationId(Guid locationId, bool noTracking = true)
     {
-        throw new NotImplementedException();
+        return (await Repository.GetCoordinatesByLocationId(locationId)).Select(x=>Mapper.Map(x)!);
+    }
+
+    public async Task<IEnumerable<Coordinate>> GetAvailableCoordinates()
+    {
+        return (await Repository.GetAvailableCoordinates()).Select(x=>Mapper.Map(x)!);
     }
 }

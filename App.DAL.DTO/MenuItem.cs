@@ -4,7 +4,7 @@ using Base.Domain;
 
 namespace App.DTO;
 
-public class MenuItem : DomainEntityId
+public class MenuItem : DomainEntityMetaId
 {
     [MinLength(1)]
     [MaxLength(128)]
@@ -18,4 +18,6 @@ public class MenuItem : DomainEntityId
     public decimal Price { get; set; } = default!;
     
     public ICollection<ItemInOrder>? ItemsInOrder { get; set; }
+    public Guid ItemCategoryId { get; set; }
+    public ItemCategory? ItemCategory { get; set; }
 }

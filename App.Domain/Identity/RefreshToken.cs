@@ -12,4 +12,6 @@ public class RefreshToken : DomainEntityId
     [StringLength(36, MinimumLength = 36)] 
     public string? PreviousToken { get; set; }
     public DateTime? PreviousTokenExpirationDateTime {get;set;}
+    public Guid AppUserId { get; set; }
+    public AppUser? AppUser { get; set; }
 }

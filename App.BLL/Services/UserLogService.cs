@@ -8,12 +8,15 @@ namespace App.BLL.Services;
 
 public class UserLogService : BaseEntityService<App.BLL.DTO.UserLog, App.DTO.UserLog, IUserLogRepository>, IUserLogService
 {
-    public UserLogService(IUserLogRepository repository, IMapper<BLL.DTO.UserLog, App.DTO.UserLog> mapper) : base(repository, mapper)
+    
+   
+    public UserLogService(IUserLogRepository repository, IMapper<App.BLL.DTO.UserLog, App.DTO.UserLog> mapper) : base(repository, mapper)
     {
+       
     }
 
-    public Task<IEnumerable<UserLog>> GetAllByFirstNameAsync(string firstName, bool noTracking = true)
+    public async Task<App.BLL.DTO.UserLog> RegisterEntrance(Guid ticketInOrderId, Guid userId, bool noTracking = true)
     {
-        throw new NotImplementedException();
+        return Mapper.Map(await Repository.RegisterEntrance(ticketInOrderId, userId))!;
     }
 }

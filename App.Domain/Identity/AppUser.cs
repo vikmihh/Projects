@@ -22,6 +22,8 @@ public class AppUser : BaseUser
     public ICollection<Order>? Order { get; set; }
     public ICollection<Card>? Card { get; set; }
     public ICollection<UserLog>? UserLog { get; set; }
+    public ICollection<TicketInOrder>? TicketsInOrder { get; set; }
+    public ICollection<ItemInOrder>? ItemsInOrder { get; set; }
     public ICollection<RefreshToken>? RefreshTokens { get; set; }
     
 }

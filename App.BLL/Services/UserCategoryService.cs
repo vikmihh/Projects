@@ -12,8 +12,9 @@ public class UserCategoryService : BaseEntityService<App.BLL.DTO.UserCategory, A
     {
     }
 
-    public Task<IEnumerable<UserCategory>> GetAllByFirstNameAsync(string firstName, bool noTracking = true)
+
+    public async Task SetUserCategoryByOrdersAmount(Guid userId, int ordersAmount)
     {
-        throw new NotImplementedException();
+       await Repository.SetUserCategoryByOrdersAmount(userId, ordersAmount);
     }
 }

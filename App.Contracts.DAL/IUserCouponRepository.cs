@@ -10,5 +10,10 @@ public interface IUserCouponRepository : IEntityRepository<App.DTO.UserCoupon>, 
 
 public interface IUserCouponRepositoryCustom<TEntity>
 {
-    Task<IEnumerable<TEntity>> GetAllByFirstNameAsync(string firstName, bool noTracking = true);
+    Task<TEntity> CreateCouponByUserId(Guid userId, Guid couponCategoryId, string couponCategoryName);
+    Task<IEnumerable<TEntity>> GetAvailableUserCouponsByUserId(Guid userId);
+    Task ActivateUserCouponByPromoCode(Guid userId, string promoCode, bool isAdding);
+    Task<TEntity?> GetUserCouponByOrderId(Guid orderId,
+        bool noTracking = true);
+
 }

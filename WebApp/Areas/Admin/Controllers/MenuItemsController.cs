@@ -24,7 +24,8 @@ namespace WebApp.Areas.Admin.Controllers
         // GET: Admin/MenuItems
         public async Task<IActionResult> Index()
         {
-            return View(await _context.MenuItems.ToListAsync());
+            var appDbContext = _context.MenuItems.Include(m => m.ItemCategory);
+            return View(await appDbContext.ToListAsync());
         }
 
         // GET: Admin/MenuItems/Details/5
@@ -36,6 +37,7 @@ namespace WebApp.Areas.Admin.Controllers
             }
 
             var menuItem = await _context.MenuItems
+                .Include(m => m.ItemCategory)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (menuItem == null)
             {
@@ -48,6 +50,7 @@ namespace WebApp.Areas.Admin.Controllers
         // GET: Admin/MenuItems/Create
         public IActionResult Create()
         {
+            ViewData["ItemCategoryId"] = new SelectList(_context.ItemCategories, "Id", "Name");
             return View();
         }
 
@@ -56,7 +59,7 @@ namespace WebApp.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ItemName,Description,Price,CreatedBy,CreatedAt,UpdatedAt,UpdatedBy,Id")] MenuItem menuItem)
+        public async Task<IActionResult> Create([Bind("ItemName,Description,Price,ItemCategoryId,CreatedBy,CreatedAt,UpdatedAt,UpdatedBy,Id")] MenuItem menuItem)
         {
             if (ModelState.IsValid)
             {
@@ -65,6 +68,7 @@ namespace WebApp.Areas.Admin.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["ItemCategoryId"] = new SelectList(_context.ItemCategories, "Id", "Name", menuItem.ItemCategoryId);
             return View(menuItem);
         }
 
@@ -81,6 +85,7 @@ namespace WebApp.Areas.Admin.Controllers
             {
                 return NotFound();
             }
+            ViewData["ItemCategoryId"] = new SelectList(_context.ItemCategories, "Id", "Name", menuItem.ItemCategoryId);
             return View(menuItem);
         }
 
@@ -89,7 +94,7 @@ namespace WebApp.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("ItemName,Description,Price,CreatedBy,CreatedAt,UpdatedAt,UpdatedBy,Id")] MenuItem menuItem)
+        public async Task<IActionResult> Edit(Guid id, [Bind("ItemName,Description,Price,ItemCategoryId,CreatedBy,CreatedAt,UpdatedAt,UpdatedBy,Id")] MenuItem menuItem)
         {
             if (id != menuItem.Id)
             {
@@ -116,6 +121,7 @@ namespace WebApp.Areas.Admin.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["ItemCategoryId"] = new SelectList(_context.ItemCategories, "Id", "Name", menuItem.ItemCategoryId);
             return View(menuItem);
         }
 
@@ -128,6 +134,7 @@ namespace WebApp.Areas.Admin.Controllers
             }
 
             var menuItem = await _context.MenuItems
+                .Include(m => m.ItemCategory)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (menuItem == null)
             {

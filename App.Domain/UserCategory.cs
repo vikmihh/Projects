@@ -10,6 +10,7 @@ public class UserCategory : DomainEntityMetaId
     [MaxLength(128)]
     [DisplayName("Category name")]
     public string CategoryName { get; set; } = default!;
+    public int OrdersAmount { get; set; } = default!;
     
     public ICollection<UserInCategory>? UsersInCategories { get; set; }
 }

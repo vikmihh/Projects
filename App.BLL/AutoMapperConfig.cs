@@ -21,5 +21,6 @@ public class AutoMapperConfig : Profile
         CreateMap<App.BLL.DTO.UserCoupon, App.DTO.UserCoupon>().ReverseMap();
         CreateMap<App.BLL.DTO.UserInCategory, App.DTO.UserInCategory>().ReverseMap();
         CreateMap<App.BLL.DTO.UserLog, App.DTO.UserLog>().ReverseMap();
+        CreateMap<App.BLL.DTO.CoordinateLocation, App.DTO.CoordinateLocation>().ReverseMap();
     }
 }

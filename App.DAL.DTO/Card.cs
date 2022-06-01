@@ -6,7 +6,7 @@ using Base.Domain;
 
 namespace App.DTO;
 
-public class Card : DomainEntityId
+public class Card : DomainEntityMetaId
 {
     [MinLength(1)]
     [MaxLength(128)]
@@ -22,7 +22,9 @@ public class Card : DomainEntityId
     
     public int SecurityCode { get; set; } = default!;
 
-    public DateTime ExpiryDate { get; set; } = default!;
+    
+    public int ExpiryMonth { get; set; } = default!;
+    public int ExpiryYear { get; set; } = default!;
         
     public ICollection<Order>? Orders { get; set; }
     public Guid AppUserId { get; set; }

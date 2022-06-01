@@ -5,14 +5,20 @@ using App.Contracts.BLL;
 using App.Contracts.DAL;
 using App.DAL.EF;
 using App.Domain.Identity;
+using Helpers.WebApp;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using Swashbuckle.AspNetCore.SwaggerGen;
 using WebApplication;
 
 var builder = Microsoft.AspNetCore.Builder.WebApplication.CreateBuilder(args);
+
+
 
 // Add services to the container.
 var connectionString = builder.Configuration.GetConnectionString("NpgsqlConnection");
@@ -24,7 +30,8 @@ builder.Services.AddScoped<IAppBLL, AppBLL>();
 
 builder.Services.AddAutoMapper(
     typeof(App.DAL.EF.AutoMapperConfig),
-    typeof(App.BLL.AutoMapperConfig)
+    typeof(App.BLL.AutoMapperConfig),
+    typeof(App.Public.DTO.AutoMapperConfig)
     );
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
@@ -32,6 +39,10 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 // default - have AppUser
 // builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
 //     .AddEntityFrameworkStores<AppDbContext>();
+
+builder.Services.AddControllersWithViews(
+    options => { options.ModelBinderProviders.Insert(0, new CustomLangStrBinderProvider()); }
+    );
 
 builder.Services.AddIdentity<AppUser, AppRole>(options =>
     {
@@ -59,7 +70,17 @@ builder.Services
             ClockSkew = TimeSpan.Zero // remove delay of token when expire
         };
     });
-        
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("CorsAllowAll",
+        policyBuilder =>
+        {
+            policyBuilder.AllowAnyOrigin();
+            policyBuilder.AllowAnyHeader();
+            policyBuilder.AllowAnyMethod();
+        });
+});
 
 builder.Services.AddControllersWithViews();
 
@@ -90,6 +111,19 @@ builder.Services.Configure<RequestLocalizationOptions>(options =>
     };
 });
 
+// API Versioning
+builder.Services.AddApiVersioning(options =>
+    {
+        options.ReportApiVersions = true;
+        // in case of no explicit version
+        options.DefaultApiVersion = new ApiVersion(1, 0);
+    }
+);
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddVersionedApiExplorer( options => options.GroupNameFormat = "'v'VVV" );
+builder.Services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
+builder.Services.AddSwaggerGen();
+
 var app = builder.Build();
 
 AppDataHelper.SetupAppData(app, app.Environment, app.Configuration);
@@ -105,6 +139,23 @@ else
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
+
+app.UseSwagger();
+app.UseSwaggerUI(options =>
+    {
+        var provider = app.Services.GetRequiredService<IApiVersionDescriptionProvider>(); 
+        foreach ( var description in provider.ApiVersionDescriptions )
+        {
+            options.SwaggerEndpoint(
+                $"/swagger/{description.GroupName}/swagger.json",
+                description.GroupName.ToUpperInvariant() 
+            );
+        }
+        // serve from root
+        // options.RoutePrefix = string.Empty;
+    }
+);
+app.UseCors("CorsAllowAll");
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
@@ -126,3 +177,8 @@ app.MapControllerRoute(
 app.MapRazorPages();
 
 app.Run();
+
+public partial class Program
+{
+
+}

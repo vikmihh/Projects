@@ -24,11 +24,6 @@ public static class AppDataHelper
             throw new ApplicationException("Problem in services. No db context.");
         }
 
-        // TODO - Check database state
-        // can't connect - wrong address
-        // can't connect - wrong user/pass
-        // can connect - but no database
-        // can connect - there is database
 
         if (configuration.GetValue<bool>("DataInitialization:DropDatabase"))
         {
@@ -54,7 +49,7 @@ public static class AppDataHelper
             {
                 ("admin", "System administrator"),
                 ("user", "Normal system user")
-                //("translator", "Language maintenance administrator")
+                
             };
             
             foreach (var roleInfo in roles)
@@ -76,10 +71,8 @@ public static class AppDataHelper
             
             var users = new (string username,string firstName,string lastName, string password, string roles)[]
             {
-                ("admin@itcollege.ee","Admin","College", "Kala.maja1", "user,admin"),
-                ("akaver@itcollege.ee","Andres","Käver", "Kala.maja1", "user,admin"),
-                ("user@itcollege.ee","User","College", "Kala.maja1", "user"),
-                ("newuser@itcollege.ee","User No Roles","College", "Kala.maja1", ""),
+                ("admin@itcollege.ee","Admin","College", "Kala.maja1", "admin"),
+                ("user@itcollege.ee","User","College", "Kala.maja1", "user")
             };
             
             foreach (var userInfo in users)
@@ -114,22 +107,23 @@ public static class AppDataHelper
 
         if (configuration.GetValue<bool>("DataInitialization:SeedData"))
         {
-            
-            var f = new ComponentTranslation
-            {
+            /*  
+             var f = new ComponentTranslation
+             {
                 
-                Translation =
-                {
-                    ["en"] = "english",
-                    ["et"] = "eesti",
-                    ["ru"] = "русский",
-                },
-                ComponentName = "LANG_DROPDOWN"
-
-            };
-            context.ComponentTranslations.Add(f);
-            context.SaveChanges();
-            
+                 Translation =
+                 {
+                     ["en"] = "english",
+                     ["et"] = "eesti",
+                     ["ru"] = "русский",
+                 },
+                 ComponentName = "LANG_DROPDOWN"
+ 
+ 
+             };
+             context.ComponentTranslations.Add(f);
+             context.SaveChanges();
+             */
         }
     }
 }

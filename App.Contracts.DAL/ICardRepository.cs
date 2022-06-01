@@ -9,8 +9,9 @@ public interface ICardRepository : IEntityRepository<App.DTO.Card>, ICardReposit
 
 public interface ICardRepositoryCustom<TEntity>
 {
-    Task<IEnumerable<TEntity>> GetAllByFullNameAsync(string fullName, bool noTracking = true);
-    Task<IEnumerable<TEntity>> GetNonExpiredByFullNameAsync(string fullName, bool noTracking = true);
-    
+
+    Task<IEnumerable<TEntity>> GetAvailableCardsForUser(Guid userId);
+
+
     Task<IEnumerable<TEntity>> GetAllAsync(Guid userId, bool noTracking = true);
 }

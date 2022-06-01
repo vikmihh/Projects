@@ -12,8 +12,24 @@ public class UserCouponService : BaseEntityService<App.BLL.DTO.UserCoupon, App.D
     {
     }
 
-    public Task<IEnumerable<UserCoupon>> GetAllByFirstNameAsync(string firstName, bool noTracking = true)
+
+    public async Task<App.BLL.DTO.UserCoupon> CreateCouponByUserId(Guid userId, Guid couponCategoryId, string couponCategoryName)
     {
-        throw new NotImplementedException();
+        return Mapper.Map(await Repository.CreateCouponByUserId(userId, couponCategoryId,couponCategoryName))!;
+    }
+
+    public async Task<IEnumerable<UserCoupon>> GetAvailableUserCouponsByUserId(Guid userId)
+    {
+        return (await Repository.GetAvailableUserCouponsByUserId(userId)).Select(x=>Mapper.Map(x)!);
+    }
+
+    public async Task ActivateUserCouponByPromoCode(Guid userId, string promoCode,bool isAdding)
+    {
+        await Repository.ActivateUserCouponByPromoCode(userId, promoCode,isAdding);
+    }
+
+    public async Task<App.BLL.DTO.UserCoupon?> GetUserCouponByOrderId(Guid orderId, bool noTracking = true)
+    {
+       return Mapper.Map(await Repository.GetUserCouponByOrderId(orderId));
     }
 }

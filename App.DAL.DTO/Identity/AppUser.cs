@@ -24,4 +24,6 @@ public class AppUser : DomainEntityId
     public ICollection<Order>? Order { get; set; }
     public ICollection<Card>? Card { get; set; }
     public ICollection<UserLog>? UserLog { get; set; }
+    public ICollection<TicketInOrder>? TicketsInOrder { get; set; }
+    public ICollection<ItemInOrder>? ItemsInOrder { get; set; }
 }

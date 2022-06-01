@@ -13,10 +13,8 @@ public class Ticket : DomainEntityMetaId
     
     public decimal Price { get; set; } = default!;
     
-    public DateTime ValidFrom { get; set; } = default!;
+    public int DayRange { get; set; } = default!;
+
     
-    public DateTime ValidUntil { get; set; } = default!;
-    
-    public ICollection<UserLog>? UserLogs { get; set; }
     public ICollection<TicketInOrder>? TicketsInOrder { get; set; }
 }

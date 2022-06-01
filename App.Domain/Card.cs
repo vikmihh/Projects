@@ -22,7 +22,9 @@ public class Card : DomainEntityMetaId
     
     public int SecurityCode { get; set; } = default!;
 
-    public DateTime ExpiryDate { get; set; } = default!;
+    
+    public int ExpiryMonth { get; set; } = default!;
+    public int ExpiryYear { get; set; } = default!;
         
     public ICollection<Order>? Orders { get; set; }
     public Guid AppUserId { get; set; }

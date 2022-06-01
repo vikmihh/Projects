@@ -12,10 +12,10 @@ public interface IEntityRepository<TEntity, TKey>
     where TKey : IEquatable<TKey>
 {
     // sync
-    TEntity Add(TEntity entity);
-    TEntity Update(TEntity entity);
-    TEntity Remove(TEntity entity);
-    TEntity Remove(TKey id);
+    TEntity Add(TEntity entity,TKey userId);
+    TEntity Update(TEntity entity, TKey userId);
+    TEntity Remove(TEntity entity,TKey userId);
+    TEntity Remove(TKey id, TKey userId);
     TEntity? FirstOrDefault(TKey id, bool noTracking = true);
     IEnumerable<TEntity> GetAll(bool noTracking = true);
     bool Exists(TKey id);
@@ -24,5 +24,6 @@ public interface IEntityRepository<TEntity, TKey>
     Task<TEntity?> FirstOrDefaultAsync(TKey id, bool noTracking = true);
     Task<IEnumerable<TEntity>> GetAllAsync(bool noTracking = true);
     Task<bool> ExistsAsync(TKey id);
-    Task<TEntity> RemoveAsync(TKey id);
+    Task<TEntity> RemoveAsync(TKey id, TKey userId);
+    
 }

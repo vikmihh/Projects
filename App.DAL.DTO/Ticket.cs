@@ -4,7 +4,7 @@ using Base.Domain;
 
 namespace App.DTO;
 
-public class Ticket : DomainEntityId
+public class Ticket : DomainEntityMetaId
 {
     [MinLength(1)]
     [MaxLength(128)]
@@ -13,10 +13,8 @@ public class Ticket : DomainEntityId
     
     public decimal Price { get; set; } = default!;
     
-    public DateTime ValidFrom { get; set; } = default!;
+    public int DayRange { get; set; } = default!;
+
     
-    public DateTime ValidUntil { get; set; } = default!;
-    
-    public ICollection<UserLog>? UserLogs { get; set; }
     public ICollection<TicketInOrder>? TicketsInOrder { get; set; }
 }

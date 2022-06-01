@@ -10,5 +10,9 @@ public interface IMenuItemRepository : IEntityRepository<App.DTO.MenuItem>, IMen
 
 public interface IMenuItemRepositoryCustom<TEntity>
 {
-    Task<IEnumerable<TEntity>> GetAllByFirstNameAsync(string firstName, bool noTracking = true);
+    // //param: categoryId, return: all possible MenuItems by categoryId
+    // Task<IEnumerable<TEntity>> GetAllByCategoryId(string firstName, bool noTracking = true);
+    Task<IEnumerable<TEntity>> GetAllByCategoryIdAsync(Guid id, bool noTracking = true);
+    
+    Task<IEnumerable<TEntity>> GetAvailableMenuItems();
 }

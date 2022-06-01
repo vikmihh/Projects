@@ -24,7 +24,7 @@ namespace WebApp.Areas.Admin.Controllers
         // GET: Admin/UserLogs
         public async Task<IActionResult> Index()
         {
-            var appDbContext = _context.UserLogs.Include(u => u.AppUser);
+            var appDbContext = _context.UserLogs.Include(u => u.AppUser).Include(u => u.TicketInOrder);
             return View(await appDbContext.ToListAsync());
         }
 
@@ -38,6 +38,7 @@ namespace WebApp.Areas.Admin.Controllers
 
             var userLog = await _context.UserLogs
                 .Include(u => u.AppUser)
+                .Include(u => u.TicketInOrder)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (userLog == null)
             {
@@ -50,7 +51,8 @@ namespace WebApp.Areas.Admin.Controllers
         // GET: Admin/UserLogs/Create
         public IActionResult Create()
         {
-            ViewData["AppUserId"] = new SelectList(_context.Users, "Id", "Id");
+            ViewData["AppUserId"] = new SelectList(_context.Users, "Id", "FirstName");
+            ViewData["TicketInOrderId"] = new SelectList(_context.TicketsInOrders, "Id", "Id");
             return View();
         }
 
@@ -59,7 +61,7 @@ namespace WebApp.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("From,Until,AppUserId,CreatedBy,CreatedAt,UpdatedAt,UpdatedBy,Id")] UserLog userLog)
+        public async Task<IActionResult> Create([Bind("From,Until,AppUserId,TicketInOrderId,CreatedBy,CreatedAt,UpdatedAt,UpdatedBy,Id")] UserLog userLog)
         {
             if (ModelState.IsValid)
             {
@@ -68,7 +70,8 @@ namespace WebApp.Areas.Admin.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["AppUserId"] = new SelectList(_context.Users, "Id", "Id", userLog.AppUserId);
+            ViewData["AppUserId"] = new SelectList(_context.Users, "Id", "FirstName", userLog.AppUserId);
+            ViewData["TicketInOrderId"] = new SelectList(_context.TicketsInOrders, "Id", "Id", userLog.TicketInOrderId);
             return View(userLog);
         }
 
@@ -85,7 +88,8 @@ namespace WebApp.Areas.Admin.Controllers
             {
                 return NotFound();
             }
-            ViewData["AppUserId"] = new SelectList(_context.Users, "Id", "Id", userLog.AppUserId);
+            ViewData["AppUserId"] = new SelectList(_context.Users, "Id", "FirstName", userLog.AppUserId);
+            ViewData["TicketInOrderId"] = new SelectList(_context.TicketsInOrders, "Id", "Id", userLog.TicketInOrderId);
             return View(userLog);
         }
 
@@ -94,7 +98,7 @@ namespace WebApp.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("From,Until,AppUserId,CreatedBy,CreatedAt,UpdatedAt,UpdatedBy,Id")] UserLog userLog)
+        public async Task<IActionResult> Edit(Guid id, [Bind("From,Until,AppUserId,TicketInOrderId,CreatedBy,CreatedAt,UpdatedAt,UpdatedBy,Id")] UserLog userLog)
         {
             if (id != userLog.Id)
             {
@@ -121,7 +125,8 @@ namespace WebApp.Areas.Admin.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["AppUserId"] = new SelectList(_context.Users, "Id", "Id", userLog.AppUserId);
+            ViewData["AppUserId"] = new SelectList(_context.Users, "Id", "FirstName", userLog.AppUserId);
+            ViewData["TicketInOrderId"] = new SelectList(_context.TicketsInOrders, "Id", "Id", userLog.TicketInOrderId);
             return View(userLog);
         }
 
@@ -135,6 +140,7 @@ namespace WebApp.Areas.Admin.Controllers
 
             var userLog = await _context.UserLogs
                 .Include(u => u.AppUser)
+                .Include(u => u.TicketInOrder)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (userLog == null)
             {

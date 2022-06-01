@@ -11,9 +11,5 @@ public class ItemCategoryRepository : BaseEntityRepository<App.DTO.ItemCategory,
     public ItemCategoryRepository(AppDbContext dbContext, IMapper<App.DTO.ItemCategory, App.Domain.ItemCategory> mapper) : base(dbContext, mapper)
     {
     }
-
-    public Task<IEnumerable<App.DTO.ItemCategory>> GetAllByFirstNameAsync(string firstName, bool noTracking = true)
-    {
-        throw new NotImplementedException();
-    }
+    
 }

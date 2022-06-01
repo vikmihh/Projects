@@ -10,5 +10,5 @@ public interface ITicketRepository : IEntityRepository<App.DTO.Ticket>, ITicketR
 
 public interface ITicketRepositoryCustom<TEntity>
 {
-    Task<IEnumerable<TEntity>> GetAllByFirstNameAsync(string firstName, bool noTracking = true);
+    
 }

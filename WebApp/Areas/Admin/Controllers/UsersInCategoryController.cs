@@ -24,7 +24,7 @@ namespace WebApp.Areas.Admin.Controllers
         // GET: Admin/UsersInCategory
         public async Task<IActionResult> Index()
         {
-            var appDbContext = _context.UsersInCategories.Include(u => u.AppUser);
+            var appDbContext = _context.UsersInCategories.Include(u => u.AppUser).Include(u => u.UserCategory);
             return View(await appDbContext.ToListAsync());
         }
 
@@ -38,6 +38,7 @@ namespace WebApp.Areas.Admin.Controllers
 
             var userInCategory = await _context.UsersInCategories
                 .Include(u => u.AppUser)
+                .Include(u => u.UserCategory)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (userInCategory == null)
             {
@@ -50,7 +51,8 @@ namespace WebApp.Areas.Admin.Controllers
         // GET: Admin/UsersInCategory/Create
         public IActionResult Create()
         {
-            ViewData["AppUserId"] = new SelectList(_context.Users, "Id", "Id");
+            ViewData["AppUserId"] = new SelectList(_context.Users, "Id", "FirstName");
+            ViewData["UserCategoryId"] = new SelectList(_context.UserCategories, "Id", "CategoryName");
             return View();
         }
 
@@ -59,7 +61,7 @@ namespace WebApp.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("From,Until,AppUserId,CreatedBy,CreatedAt,UpdatedAt,UpdatedBy,Id")] UserInCategory userInCategory)
+        public async Task<IActionResult> Create([Bind("AppUserId,UserCategoryId,CreatedBy,CreatedAt,UpdatedAt,UpdatedBy,Id")] UserInCategory userInCategory)
         {
             if (ModelState.IsValid)
             {
@@ -68,7 +70,8 @@ namespace WebApp.Areas.Admin.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["AppUserId"] = new SelectList(_context.Users, "Id", "Id", userInCategory.AppUserId);
+            ViewData["AppUserId"] = new SelectList(_context.Users, "Id", "FirstName", userInCategory.AppUserId);
+            ViewData["UserCategoryId"] = new SelectList(_context.UserCategories, "Id", "CategoryName", userInCategory.UserCategoryId);
             return View(userInCategory);
         }
 
@@ -85,7 +88,8 @@ namespace WebApp.Areas.Admin.Controllers
             {
                 return NotFound();
             }
-            ViewData["AppUserId"] = new SelectList(_context.Users, "Id", "Id", userInCategory.AppUserId);
+            ViewData["AppUserId"] = new SelectList(_context.Users, "Id", "FirstName", userInCategory.AppUserId);
+            ViewData["UserCategoryId"] = new SelectList(_context.UserCategories, "Id", "CategoryName", userInCategory.UserCategoryId);
             return View(userInCategory);
         }
 
@@ -94,7 +98,7 @@ namespace WebApp.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("From,Until,AppUserId,CreatedBy,CreatedAt,UpdatedAt,UpdatedBy,Id")] UserInCategory userInCategory)
+        public async Task<IActionResult> Edit(Guid id, [Bind("From,Until,AppUserId,UserCategoryId,CreatedBy,CreatedAt,UpdatedAt,UpdatedBy,Id")] UserInCategory userInCategory)
         {
             if (id != userInCategory.Id)
             {
@@ -121,7 +125,8 @@ namespace WebApp.Areas.Admin.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["AppUserId"] = new SelectList(_context.Users, "Id", "Id", userInCategory.AppUserId);
+            ViewData["AppUserId"] = new SelectList(_context.Users, "Id", "FirstName", userInCategory.AppUserId);
+            ViewData["UserCategoryId"] = new SelectList(_context.UserCategories, "Id", "CategoryName", userInCategory.UserCategoryId);
             return View(userInCategory);
         }
 
@@ -135,6 +140,7 @@ namespace WebApp.Areas.Admin.Controllers
 
             var userInCategory = await _context.UsersInCategories
                 .Include(u => u.AppUser)
+                .Include(u => u.UserCategory)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (userInCategory == null)
             {

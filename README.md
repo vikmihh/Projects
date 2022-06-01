@@ -16,7 +16,7 @@ dotnet aspnet-codegenerator controller -name ComponentTranslationsController    
 
 dotnet aspnet-codegenerator controller -name CardsController       -actions -m  App.Domain.Card    -dc AppDbContext -outDir Areas\Admin\Controllers --useDefaultLayout --useAsyncActions --referenceScriptLibraries -f
 
-dotnet aspnet-codegenerator controller -name CordinatesController       -actions -m  App.Domain.Coordinate    -dc AppDbContext -outDir Areas\Admin\Controllers --useDefaultLayout --useAsyncActions --referenceScriptLibraries -f
+dotnet aspnet-codegenerator controller -name CoordinatesController       -actions -m  App.Domain.Coordinate    -dc AppDbContext -outDir Areas\Admin\Controllers --useDefaultLayout --useAsyncActions --referenceScriptLibraries -f
 
 dotnet aspnet-codegenerator controller -name CouponCategoriesController       -actions -m  App.Domain.CouponCategory    -dc AppDbContext -outDir Areas\Admin\Controllers --useDefaultLayout --useAsyncActions --referenceScriptLibraries -f
 
@@ -39,6 +39,8 @@ dotnet aspnet-codegenerator controller -name UsersCouponController       -action
 dotnet aspnet-codegenerator controller -name UsersInCategoryController       -actions -m  App.Domain.UserInCategory    -dc AppDbContext -outDir Areas\Admin\Controllers --useDefaultLayout --useAsyncActions --referenceScriptLibraries -f
 
 dotnet aspnet-codegenerator controller -name UserLogsController       -actions -m  App.Domain.UserLog    -dc AppDbContext -outDir Areas\Admin\Controllers --useDefaultLayout --useAsyncActions --referenceScriptLibraries -f
+dotnet aspnet-codegenerator controller -name UserCouponsInOrderController       -actions -m  App.Domain.UserCouponInOrder    -dc AppDbContext -outDir Areas\Admin\Controllers --useDefaultLayout --useAsyncActions --referenceScriptLibraries -f
+dotnet aspnet-codegenerator controller -name CoordinateLocationsController       -actions -m  App.Domain.CoordinateLocation    -dc AppDbContext -outDir Areas\Admin\Controllers --useDefaultLayout --useAsyncActions --referenceScriptLibraries -f
 
 
 WebApi 
@@ -57,3 +59,5 @@ dotnet aspnet-codegenerator controller -name UsersCategoryController     -m App.
 dotnet aspnet-codegenerator controller -name UsersCouponController     -m App.Domain.UserCoupon     -actions -dc AppDbContext -outDir ApiControllers -api --useAsyncActions  -f
 dotnet aspnet-codegenerator controller -name UsersInCategoryController     -m App.Domain.UserInCategory     -actions -dc AppDbContext -outDir ApiControllers -api --useAsyncActions  -f
 dotnet aspnet-codegenerator controller -name UserLogsController     -m App.Domain.UserLog     -actions -dc AppDbContext -outDir ApiControllers -api --useAsyncActions  -f
+dotnet aspnet-codegenerator controller -name UserCouponsInOrderController     -m App.Domain.UserCouponInOrder     -actions -dc AppDbContext -outDir ApiControllers -api --useAsyncActions  -f
+dotnet aspnet-codegenerator controller -name CoordinatesLocationController     -m App.Domain.CoordinateLocation     -actions -dc AppDbContext -outDir ApiControllers -api --useAsyncActions  -f

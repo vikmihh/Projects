@@ -10,5 +10,5 @@ public interface IUserCategoryRepository : IEntityRepository<App.DTO.UserCategor
 
 public interface IUserCategoryRepositoryCustom<TEntity>
 {
-    Task<IEnumerable<TEntity>> GetAllByFirstNameAsync(string firstName, bool noTracking = true);
+    Task SetUserCategoryByOrdersAmount(Guid userId, int ordersAmount);
 }
