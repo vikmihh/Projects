@@ -105,6 +105,6 @@ FROM mcr.microsoft.com/dotnet/aspnet:latest AS runtime
 WORKDIR /app
 ENV ConnectionStrings:SqlServerConnection="Server=alpha.akaver.com,1533;User Id=student;Password=Student.Bad.password.0;Database=akaver_sportmap_123;MultipleActiveResultSets=true"
 # my ConnectionStrings= "Host=localhost;Port=5432;Username=postgres;Password=postgres;database=CoWork"
-# "Server=alpha.cowork.com,5432;User Id=student;Password=Student.Bad.password.0;Database=CoWorkCafe;MultipleActiveResultSets=true"
+
 COPY --from=build /app/WebApp/out ./
 ENTRYPOINT ["dotnet", "WebApp.dll"]

@@ -15,8 +15,7 @@ public interface IOrderRepositoryCustom<TEntity>
     // //params: MenuItemId, Amount
     // Task<IEnumerable<TEntity>> AddMenuItemByOrderId(string firstName, bool noTracking = true);
     // Task<IEnumerable<TEntity>> AddTicketByOrderId(string firstName, bool noTracking = true);
-
-    Task<TEntity> ProceedOrderConfirmation(TEntity order, Guid userId);
+    
 
     Task<int> GetOrdersAmount(Guid appUserId);
 

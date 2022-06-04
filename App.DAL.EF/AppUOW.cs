@@ -52,9 +52,7 @@ public class AppUOW : BaseUOW<AppDbContext>, IAppUnitOfWork
     private IOrderRepository? _orders;
 
     public virtual IOrderRepository Orders =>
-        _orders ??= new OrderRepository(UOWDbContext, new OrderMapper(_mapper), new TicketInOrderMapper(_mapper),
-            new ItemInOrderMapper(_mapper), new UserCouponMapper(_mapper), new UserCategoryMapper(_mapper),
-            new CouponCategoryMapper(_mapper), new UserInCategoryMapper(_mapper));
+        _orders ??= new OrderRepository(UOWDbContext, new OrderMapper(_mapper));
 
     private ITicketInOrderRepository? _ticketsInOrder;
 

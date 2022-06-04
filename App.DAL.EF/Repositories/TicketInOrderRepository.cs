@@ -44,8 +44,7 @@ public class TicketInOrderRepository :
 
     public async Task<App.DTO.TicketInOrder> AddTicketInCurrentOrderAsync(Guid userId, Guid ticketId)
     {
-        var order = await new OrderRepository(RepoDbContext, _orderMapper, Mapper, _itemInOrderMapper,
-                _userCouponMapper, _userCategoryMapper, _couponCategoryMapper, _userInCategoryMapper)
+        var order = await new OrderRepository(RepoDbContext, _orderMapper)
             .GetCurrentOrderByUserIdAsync(userId);
 
         var ticketInOrder = Add(new App.DTO.TicketInOrder

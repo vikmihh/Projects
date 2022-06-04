@@ -9,11 +9,6 @@ public class ItemInOrderRepository : BaseEntityRepository<App.DTO.ItemInOrder, A
     IItemInOrderRepository
 {
     private readonly IMapper<App.DTO.Order, App.Domain.Order> _orderMapper;
-    private readonly IMapper<App.DTO.TicketInOrder, App.Domain.TicketInOrder> _ticketInOrderMapper;
-    private readonly IMapper<App.DTO.UserCategory, App.Domain.UserCategory> _userCategoryMapper;
-    private readonly IMapper<App.DTO.UserCoupon, App.Domain.UserCoupon> _userCouponMapper;
-    private readonly IMapper<App.DTO.CouponCategory, App.Domain.CouponCategory> _couponCategoryMapper;
-    private readonly IMapper<App.DTO.UserInCategory, App.Domain.UserInCategory> _userInCategoryMapper;
 
 
     public ItemInOrderRepository(AppDbContext dbContext, IMapper<App.DTO.ItemInOrder, App.Domain.ItemInOrder> mapper,
@@ -24,12 +19,7 @@ public class ItemInOrderRepository : BaseEntityRepository<App.DTO.ItemInOrder, A
         IMapper<App.DTO.CouponCategory, App.Domain.CouponCategory> couponCategoryMapper,
         IMapper<App.DTO.UserInCategory, App.Domain.UserInCategory> userInCategoryMapper) : base(dbContext, mapper)
     {
-        _ticketInOrderMapper = ticketInOrderMapper;
         _orderMapper = orderMapper;
-        _userCategoryMapper = userCategoryMapper;
-        _userCouponMapper = userCouponMapper;
-        _couponCategoryMapper = couponCategoryMapper;
-        _userInCategoryMapper = userInCategoryMapper;
     }
     
     public async Task<decimal> CalculateItemsInOrderPrice(Guid orderId)
@@ -65,8 +55,7 @@ public class ItemInOrderRepository : BaseEntityRepository<App.DTO.ItemInOrder, A
 
     public async Task<App.DTO.ItemInOrder> AddItemInCurrentOrderAsync(Guid userId, Guid menuItemId, int amount)
     {
-        var orderRepository = new OrderRepository(RepoDbContext,_orderMapper,_ticketInOrderMapper,
-            Mapper,_userCouponMapper,_userCategoryMapper,_couponCategoryMapper,_userInCategoryMapper);
+        var orderRepository = new OrderRepository(RepoDbContext,_orderMapper);
         var order = await orderRepository.GetCurrentOrderByUserIdAsync(userId);
         var existingItemInOrder = order.ItemsInOrder?.FirstOrDefault(i => i.MenuItemId.CompareTo(menuItemId) == 0);
         if (existingItemInOrder != null)

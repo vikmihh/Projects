@@ -1,15 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
-using App.Domain;
-using App.Public.DTO.v1.Identity;
-using Base.Contracts.Domain;
-using Base.Domain;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Xunit;
 using Xunit.Abstractions;

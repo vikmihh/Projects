@@ -23,3 +23,11 @@
 **/values.dev.yaml
 LICENSE
 README.md
+
+**/bin
+**/obj
+**/out
+**/.vscode
+**/.vs
+.dotnet
+.Microsoft.DotNet.ImageBuilder

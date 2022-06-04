@@ -32,7 +32,7 @@ public static class AppDataHelper
 
         if (configuration.GetValue<bool>("DataInitialization:MigrateDatabase"))
         {
-            context.Database.Migrate();
+//            context.Database.Migrate();
         }
 
         if (configuration.GetValue<bool>("DataInitialization:SeedIdentity"))

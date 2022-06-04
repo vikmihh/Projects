@@ -32,7 +32,7 @@ namespace WebApplication.ApiControllers
         /// </summary>
         /// <param name="bll"> Gives access to entities</param>
         /// <param name="mapper">AutoMapper</param>
-        public OrderController(IAppBLL bll,IMapper mapper)
+        public OrderController(IAppBLL bll, IMapper mapper)
         {
             _bll = bll;
             Mapper = mapper;
@@ -87,21 +87,18 @@ namespace WebApplication.ApiControllers
         {
             var order = await _bll.Orders.FirstOrDefaultAsync(id);
 
-            if (order == null)
+            if (order != null) return OrderMapper.MapToPublic(order);
+            var errorResponse = new RestApiErrorResponse()
             {
-                var errorResponse = new RestApiErrorResponse()
-                {
-                    Type = "https://datatracker.ietf.org/doc/html/rfc7231#section-6.5.1",
-                    Title = "Order is not found!",
-                    Status = HttpStatusCode.NotFound,
-                    TraceId = Activity.Current?.Id ?? HttpContext.TraceIdentifier
-                };
-                return NotFound(errorResponse);
-            }
+                Type = "https://datatracker.ietf.org/doc/html/rfc7231#section-6.5.1",
+                Title = "Order is not found!",
+                Status = HttpStatusCode.NotFound,
+                TraceId = Activity.Current?.Id ?? HttpContext.TraceIdentifier
+            };
+            return NotFound(errorResponse);
 
-            return OrderMapper.MapToPublic(order);
         }
-        
+
         // POST: api/Order
         /// <summary>
         /// Confirm the order
@@ -115,17 +112,17 @@ namespace WebApplication.ApiControllers
         [HttpPost("proceedOrder")]
         public async Task<ActionResult<App.Public.DTO.v1.Order>> ProceedOrderConfirmation(App.Public.DTO.v1.Order order)
         {
-           var ord= await _bll.Orders.ProceedOrderConfirmation(OrderMapper.MapToBll(order), User.GetUserId());
+            var proceededOrder = await _bll.Orders.ProceedOrderConfirmation(OrderMapper.MapToBll(order)!, User.GetUserId());
             await _bll.SaveChangesAsync();
- 
+
             return CreatedAtAction(
                 "ProceedOrderConfirmation",
                 new
                 {
-                    id = order.Id,
+                    id = proceededOrder.Id,
                     version = HttpContext.GetRequestedApiVersion()!.ToString()
                 },
-                OrderMapper.MapToPublic(ord));
+                OrderMapper.MapToPublic(proceededOrder));
         }
 
         /// <summary>

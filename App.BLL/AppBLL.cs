@@ -54,7 +54,11 @@ public class AppBLL : BaseBLL<IAppUnitOfWork>, IAppBLL
     
     private IOrderService? _orders;
     public IOrderService Orders => 
-        _orders ??= new OrderService(UnitOfWork.Orders, new OrderMapper(_mapper));
+        _orders ??= new OrderService(UnitOfWork.Orders, new OrderMapper(_mapper),
+            UnitOfWork.TicketsInOrder,new TicketInOrderMapper(_mapper),
+            UnitOfWork.ItemsInOrder, new ItemInOrderMapper(_mapper),UnitOfWork.UsersCoupon,
+            new UserCouponMapper(_mapper),UnitOfWork.UsersCategory,new UserCategoryMapper(_mapper),
+            UnitOfWork.CouponCategories,new CouponCategoryMapper(_mapper));
     
     private ITicketService? _tickets;
     public ITicketService Tickets => 

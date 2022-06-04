@@ -66,8 +66,7 @@ public class UserCouponRepository : BaseEntityRepository<App.DTO.UserCoupon, App
 
     public async Task ActivateUserCouponByPromoCode(Guid userId, string promoCode, bool isAdding)
     {
-        var order = await new OrderRepository(RepoDbContext, _orderMapper, _ticketInOrderMapper, _itemInOrderMapper,
-                Mapper, _userCategoryMapper, _couponCategoryMapper, _userInCategoryMapper)
+        var order = await new OrderRepository(RepoDbContext, _orderMapper)
             .GetCurrentOrderByUserIdAsync(userId);
         var userCoupon = await CreateQuery().Where(userCoupon =>
             userCoupon.AppUserId.Equals(userId) && userCoupon.PromoCode.Equals(promoCode)).FirstOrDefaultAsync();
