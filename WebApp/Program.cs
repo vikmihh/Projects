@@ -36,10 +36,6 @@ builder.Services.AddAutoMapper(
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-// default - have AppUser
-// builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-//     .AddEntityFrameworkStores<AppDbContext>();
-
 builder.Services.AddControllersWithViews(
     options => { options.ModelBinderProviders.Insert(0, new CustomLangStrBinderProvider()); }
     );
