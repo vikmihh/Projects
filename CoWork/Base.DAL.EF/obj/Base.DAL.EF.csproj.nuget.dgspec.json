@@ -1,0 +1,305 @@
+{
+  "format": 1,
+  "restore": {
+    "C:\\Users\\User\\RiderProjects\\csharp\\Projects\\CoWork\\Base.DAL.EF\\Base.DAL.EF.csproj": {}
+  },
+  "projects": {
+    "C:\\Users\\User\\RiderProjects\\csharp\\Projects\\CoWork\\Base.Contracts.Base\\Base.Contracts.Base.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\User\\RiderProjects\\csharp\\Projects\\CoWork\\Base.Contracts.Base\\Base.Contracts.Base.csproj",
+        "projectName": "Base.Contracts.Base",
+        "projectPath": "C:\\Users\\User\\RiderProjects\\csharp\\Projects\\CoWork\\Base.Contracts.Base\\Base.Contracts.Base.csproj",
+        "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\User\\RiderProjects\\csharp\\Projects\\CoWork\\Base.Contracts.Base\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\User\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net6.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net6.0": {
+            "targetAlias": "net6.0",
+            "projectReferences": {
+              "C:\\Users\\User\\RiderProjects\\csharp\\Projects\\CoWork\\Base.Contracts.DAL\\Base.Contracts.DAL.csproj": {
+                "projectPath": "C:\\Users\\User\\RiderProjects\\csharp\\Projects\\CoWork\\Base.Contracts.DAL\\Base.Contracts.DAL.csproj"
+              },
+              "C:\\Users\\User\\RiderProjects\\csharp\\Projects\\CoWork\\Base.Contracts.Domain\\Base.Contracts.Domain.csproj": {
+                "projectPath": "C:\\Users\\User\\RiderProjects\\csharp\\Projects\\CoWork\\Base.Contracts.Domain\\Base.Contracts.Domain.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net6.0": {
+          "targetAlias": "net6.0",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.101\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\User\\RiderProjects\\csharp\\Projects\\CoWork\\Base.Contracts.DAL\\Base.Contracts.DAL.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\User\\RiderProjects\\csharp\\Projects\\CoWork\\Base.Contracts.DAL\\Base.Contracts.DAL.csproj",
+        "projectName": "Base.Contracts.DAL",
+        "projectPath": "C:\\Users\\User\\RiderProjects\\csharp\\Projects\\CoWork\\Base.Contracts.DAL\\Base.Contracts.DAL.csproj",
+        "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\User\\RiderProjects\\csharp\\Projects\\CoWork\\Base.Contracts.DAL\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\User\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net6.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net6.0": {
+            "targetAlias": "net6.0",
+            "projectReferences": {
+              "C:\\Users\\User\\RiderProjects\\csharp\\Projects\\CoWork\\Base.Contracts.Domain\\Base.Contracts.Domain.csproj": {
+                "projectPath": "C:\\Users\\User\\RiderProjects\\csharp\\Projects\\CoWork\\Base.Contracts.Domain\\Base.Contracts.Domain.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net6.0": {
+          "targetAlias": "net6.0",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.101\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\User\\RiderProjects\\csharp\\Projects\\CoWork\\Base.Contracts.Domain\\Base.Contracts.Domain.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\User\\RiderProjects\\csharp\\Projects\\CoWork\\Base.Contracts.Domain\\Base.Contracts.Domain.csproj",
+        "projectName": "Base.Contracts.Domain",
+        "projectPath": "C:\\Users\\User\\RiderProjects\\csharp\\Projects\\CoWork\\Base.Contracts.Domain\\Base.Contracts.Domain.csproj",
+        "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\User\\RiderProjects\\csharp\\Projects\\CoWork\\Base.Contracts.Domain\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\User\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net6.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net6.0": {
+            "targetAlias": "net6.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net6.0": {
+          "targetAlias": "net6.0",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.101\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\User\\RiderProjects\\csharp\\Projects\\CoWork\\Base.DAL.EF\\Base.DAL.EF.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\User\\RiderProjects\\csharp\\Projects\\CoWork\\Base.DAL.EF\\Base.DAL.EF.csproj",
+        "projectName": "Base.DAL.EF",
+        "projectPath": "C:\\Users\\User\\RiderProjects\\csharp\\Projects\\CoWork\\Base.DAL.EF\\Base.DAL.EF.csproj",
+        "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\User\\RiderProjects\\csharp\\Projects\\CoWork\\Base.DAL.EF\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\User\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net6.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net6.0": {
+            "targetAlias": "net6.0",
+            "projectReferences": {
+              "C:\\Users\\User\\RiderProjects\\csharp\\Projects\\CoWork\\Base.Contracts.Base\\Base.Contracts.Base.csproj": {
+                "projectPath": "C:\\Users\\User\\RiderProjects\\csharp\\Projects\\CoWork\\Base.Contracts.Base\\Base.Contracts.Base.csproj"
+              },
+              "C:\\Users\\User\\RiderProjects\\csharp\\Projects\\CoWork\\Base.Contracts.DAL\\Base.Contracts.DAL.csproj": {
+                "projectPath": "C:\\Users\\User\\RiderProjects\\csharp\\Projects\\CoWork\\Base.Contracts.DAL\\Base.Contracts.DAL.csproj"
+              },
+              "C:\\Users\\User\\RiderProjects\\csharp\\Projects\\CoWork\\Base.Domain\\Base.Domain.csproj": {
+                "projectPath": "C:\\Users\\User\\RiderProjects\\csharp\\Projects\\CoWork\\Base.Domain\\Base.Domain.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net6.0": {
+          "targetAlias": "net6.0",
+          "dependencies": {
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[6.0.4, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.101\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\User\\RiderProjects\\csharp\\Projects\\CoWork\\Base.Domain\\Base.Domain.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\User\\RiderProjects\\csharp\\Projects\\CoWork\\Base.Domain\\Base.Domain.csproj",
+        "projectName": "Base.Domain",
+        "projectPath": "C:\\Users\\User\\RiderProjects\\csharp\\Projects\\CoWork\\Base.Domain\\Base.Domain.csproj",
+        "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\User\\RiderProjects\\csharp\\Projects\\CoWork\\Base.Domain\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\User\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net6.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net6.0": {
+            "targetAlias": "net6.0",
+            "projectReferences": {
+              "C:\\Users\\User\\RiderProjects\\csharp\\Projects\\CoWork\\Base.Contracts.Domain\\Base.Contracts.Domain.csproj": {
+                "projectPath": "C:\\Users\\User\\RiderProjects\\csharp\\Projects\\CoWork\\Base.Contracts.Domain\\Base.Contracts.Domain.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net6.0": {
+          "targetAlias": "net6.0",
+          "dependencies": {
+            "Microsoft.Extensions.Identity.Stores": {
+              "target": "Package",
+              "version": "[6.0.4, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.101\\RuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}

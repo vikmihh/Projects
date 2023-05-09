@@ -56,6 +56,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Public.DTO", "App.Publi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Testing.WebApp", "Testing.WebApp\Testing.WebApp.csproj", "{8627AEFD-598C-4FB2-8615-7E3EDE0B2859}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Helpers.WebApp", "Helpers.WebApp\Helpers.WebApp.csproj", "{665662EC-75A1-4758-BF7F-F4585A3542DB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -146,6 +148,10 @@ Global
 		{8627AEFD-598C-4FB2-8615-7E3EDE0B2859}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8627AEFD-598C-4FB2-8615-7E3EDE0B2859}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8627AEFD-598C-4FB2-8615-7E3EDE0B2859}.Release|Any CPU.Build.0 = Release|Any CPU
+		{665662EC-75A1-4758-BF7F-F4585A3542DB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{665662EC-75A1-4758-BF7F-F4585A3542DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{665662EC-75A1-4758-BF7F-F4585A3542DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{665662EC-75A1-4758-BF7F-F4585A3542DB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{DBD48A97-4D6A-4063-94FB-6BEE051DB080} = {39D17FE1-D1A3-473E-86BD-6FF2DB055BBB}

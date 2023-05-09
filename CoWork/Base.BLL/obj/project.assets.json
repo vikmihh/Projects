@@ -1,0 +1,147 @@
+{
+  "version": 3,
+  "targets": {
+    "net6.0": {
+      "Base.Contracts.Base/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v6.0",
+        "dependencies": {
+          "Base.Contracts.DAL": "1.0.0",
+          "Base.Contracts.Domain": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/Base.Contracts.Base.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Base.Contracts.Base.dll": {}
+        }
+      },
+      "Base.Contracts.BLL/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v6.0",
+        "dependencies": {
+          "Base.Contracts.DAL": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/Base.Contracts.BLL.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Base.Contracts.BLL.dll": {}
+        }
+      },
+      "Base.Contracts.DAL/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v6.0",
+        "dependencies": {
+          "Base.Contracts.Domain": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/Base.Contracts.DAL.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Base.Contracts.DAL.dll": {}
+        }
+      },
+      "Base.Contracts.Domain/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v6.0",
+        "compile": {
+          "bin/placeholder/Base.Contracts.Domain.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Base.Contracts.Domain.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "Base.Contracts.Base/1.0.0": {
+      "type": "project",
+      "path": "../Base.Contracts.Base/Base.Contracts.Base.csproj",
+      "msbuildProject": "../Base.Contracts.Base/Base.Contracts.Base.csproj"
+    },
+    "Base.Contracts.BLL/1.0.0": {
+      "type": "project",
+      "path": "../Base.Contracts.BLL/Base.Contracts.BLL.csproj",
+      "msbuildProject": "../Base.Contracts.BLL/Base.Contracts.BLL.csproj"
+    },
+    "Base.Contracts.DAL/1.0.0": {
+      "type": "project",
+      "path": "../Base.Contracts.DAL/Base.Contracts.DAL.csproj",
+      "msbuildProject": "../Base.Contracts.DAL/Base.Contracts.DAL.csproj"
+    },
+    "Base.Contracts.Domain/1.0.0": {
+      "type": "project",
+      "path": "../Base.Contracts.Domain/Base.Contracts.Domain.csproj",
+      "msbuildProject": "../Base.Contracts.Domain/Base.Contracts.Domain.csproj"
+    }
+  },
+  "projectFileDependencyGroups": {
+    "net6.0": [
+      "Base.Contracts.BLL >= 1.0.0",
+      "Base.Contracts.Base >= 1.0.0"
+    ]
+  },
+  "packageFolders": {
+    "C:\\Users\\User\\.nuget\\packages\\": {}
+  },
+  "project": {
+    "version": "1.0.0",
+    "restore": {
+      "projectUniqueName": "C:\\Users\\User\\RiderProjects\\csharp\\Projects\\CoWork\\Base.BLL\\Base.BLL.csproj",
+      "projectName": "Base.BLL",
+      "projectPath": "C:\\Users\\User\\RiderProjects\\csharp\\Projects\\CoWork\\Base.BLL\\Base.BLL.csproj",
+      "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\User\\RiderProjects\\csharp\\Projects\\CoWork\\Base.BLL\\obj\\",
+      "projectStyle": "PackageReference",
+      "configFilePaths": [
+        "C:\\Users\\User\\AppData\\Roaming\\NuGet\\NuGet.Config"
+      ],
+      "originalTargetFrameworks": [
+        "net6.0"
+      ],
+      "sources": {
+        "https://api.nuget.org/v3/index.json": {}
+      },
+      "frameworks": {
+        "net6.0": {
+          "targetAlias": "net6.0",
+          "projectReferences": {
+            "C:\\Users\\User\\RiderProjects\\csharp\\Projects\\CoWork\\Base.Contracts.Base\\Base.Contracts.Base.csproj": {
+              "projectPath": "C:\\Users\\User\\RiderProjects\\csharp\\Projects\\CoWork\\Base.Contracts.Base\\Base.Contracts.Base.csproj"
+            },
+            "C:\\Users\\User\\RiderProjects\\csharp\\Projects\\CoWork\\Base.Contracts.BLL\\Base.Contracts.BLL.csproj": {
+              "projectPath": "C:\\Users\\User\\RiderProjects\\csharp\\Projects\\CoWork\\Base.Contracts.BLL\\Base.Contracts.BLL.csproj"
+            }
+          }
+        }
+      },
+      "warningProperties": {
+        "warnAsError": [
+          "NU1605"
+        ]
+      }
+    },
+    "frameworks": {
+      "net6.0": {
+        "targetAlias": "net6.0",
+        "imports": [
+          "net461",
+          "net462",
+          "net47",
+          "net471",
+          "net472",
+          "net48"
+        ],
+        "assetTargetFallback": true,
+        "warn": true,
+        "frameworkReferences": {
+          "Microsoft.NETCore.App": {
+            "privateAssets": "all"
+          }
+        },
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.101\\RuntimeIdentifierGraph.json"
+      }
+    }
+  }
+}
