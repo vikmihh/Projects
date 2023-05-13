@@ -26,7 +26,6 @@ public class ConfigureSwaggerOptions : IConfigureOptions<SwaggerGenOptions>
     /// <param name="options">Provides configurations</param>
     public void Configure(SwaggerGenOptions options)
     {
-        // add all possible api versions found
         foreach (var description in _provider.ApiVersionDescriptions)
         {
             options.SwaggerDoc(
@@ -35,16 +34,13 @@ public class ConfigureSwaggerOptions : IConfigureOptions<SwaggerGenOptions>
                 {
                     Title = $"API {description.ApiVersion}",
                     Version = description.ApiVersion.ToString()
-                    // Description, TermsOfServce, Contact, License, ...
                 });
         }
         
-        // include xml comments (enable creation in csproj file)
         var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
         var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
         options.IncludeXmlComments(xmlPath);
         
-        // use FullName for schemaId - avoids conflicts between classes using the same name (which are in different namespaces)
         options.CustomSchemaIds(i => i.FullName);
         
         options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
@@ -77,7 +73,5 @@ public class ConfigureSwaggerOptions : IConfigureOptions<SwaggerGenOptions>
                 new List<string>()
             }
         });
-        
     }
-
 }

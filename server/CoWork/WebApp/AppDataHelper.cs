@@ -1,9 +1,6 @@
-﻿using System.Security.Claims;
-using App.DAL.EF;
-using App.Domain;
+﻿using App.DAL.EF;
 using App.Domain.Identity;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 
 namespace WebApplication;
 
@@ -104,26 +101,6 @@ public static class AppDataHelper
                 }
             }
         }
-
-        if (configuration.GetValue<bool>("DataInitialization:SeedData"))
-        {
-            /*  
-             var f = new ComponentTranslation
-             {
-                
-                 Translation =
-                 {
-                     ["en"] = "english",
-                     ["et"] = "eesti",
-                     ["ru"] = "русский",
-                 },
-                 ComponentName = "LANG_DROPDOWN"
- 
- 
-             };
-             context.ComponentTranslations.Add(f);
-             context.SaveChanges();
-             */
-        }
+        
     }
 }
