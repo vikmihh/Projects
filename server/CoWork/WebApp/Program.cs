@@ -1,13 +1,10 @@
-using System.Globalization;
 using System.Text;
 using App.BLL;
 using App.Contracts.BLL;
 using App.Contracts.DAL;
 using App.DAL.EF;
 using App.Domain.Identity;
-using Helpers.WebApp;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.EntityFrameworkCore;
@@ -15,10 +12,9 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using WebApplication;
+using AutoMapperConfig = App.DAL.EF.AutoMapperConfig;
 
 var builder = Microsoft.AspNetCore.Builder.WebApplication.CreateBuilder(args);
-
-
 
 // Add services to the container.
 var connectionString = builder.Configuration.GetConnectionString("NpgsqlConnection");
@@ -29,16 +25,12 @@ builder.Services.AddScoped<IAppUnitOfWork, AppUOW>();
 builder.Services.AddScoped<IAppBLL, AppBLL>();
 
 builder.Services.AddAutoMapper(
-    typeof(App.DAL.EF.AutoMapperConfig),
+    typeof(AutoMapperConfig),
     typeof(App.BLL.AutoMapperConfig),
     typeof(App.Public.DTO.AutoMapperConfig)
     );
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
-
-builder.Services.AddControllersWithViews(
-    options => { options.ModelBinderProviders.Insert(0, new CustomLangStrBinderProvider()); }
-    );
 
 builder.Services.AddIdentity<AppUser, AppRole>(options =>
     {
@@ -80,33 +72,6 @@ builder.Services.AddCors(options =>
 
 builder.Services.AddControllersWithViews();
 
-var supportedCultures = builder
-    .Configuration
-    .GetSection("SupportedCultures")
-    .GetChildren()
-    .Select(x => new CultureInfo(x.Value))
-    .ToArray();
-builder.Services.Configure<RequestLocalizationOptions>(options =>
-{
-    // datetime and currency support
-    options.SupportedCultures = supportedCultures;
-    // UI translated strings
-    options.SupportedUICultures = supportedCultures;
-    // if nothing is found, use this
-    options.DefaultRequestCulture =
-        new RequestCulture(
-            builder.Configuration["DefaultCulture"], 
-            builder.Configuration["DefaultCulture"]);
-    options.SetDefaultCulture(builder.Configuration["DefaultCulture"]);
-    options.RequestCultureProviders = new List<IRequestCultureProvider>
-    {
-        // Order is important, its in which order they will be evaluated
-        // add support for ?culture=ru-RU
-        new QueryStringRequestCultureProvider(),
-        new CookieRequestCultureProvider()
-    };
-});
-
 // API Versioning
 builder.Services.AddApiVersioning(options =>
     {
@@ -124,18 +89,6 @@ var app = builder.Build();
 
 AppDataHelper.SetupAppData(app, app.Environment, app.Configuration);
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseMigrationsEndPoint();
-}
-else
-{
-    app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-    app.UseHsts();
-}
-
 app.UseSwagger();
 app.UseSwaggerUI(options =>
     {
@@ -147,8 +100,6 @@ app.UseSwaggerUI(options =>
                 description.GroupName.ToUpperInvariant() 
             );
         }
-        // serve from root
-        // options.RoutePrefix = string.Empty;
     }
 );
 app.UseCors("CorsAllowAll");
@@ -163,14 +114,8 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(
-    name: "areas",
-    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
-
-
-app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
-app.MapRazorPages();
 
 app.Run();
 
