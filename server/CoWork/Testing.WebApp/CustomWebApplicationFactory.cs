@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using App.DAL.EF;
-using App.Domain;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;

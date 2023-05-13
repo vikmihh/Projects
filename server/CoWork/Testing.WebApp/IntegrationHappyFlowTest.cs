@@ -9,7 +9,7 @@ using Xunit;
 using Xunit.Abstractions;
 
 
-namespace Testing.WebApp.ApiControllers;
+namespace Testing.WebApp;
 
 public class IntegrationOrderController : IClassFixture<CustomWebApplicationFactory<Program>>
 {

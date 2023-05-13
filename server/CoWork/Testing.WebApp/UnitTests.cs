@@ -95,7 +95,7 @@ public class OrderServiceTests
 
     //Testing BaseEntityService methods
     [Fact]
-    public void Test1_baseBehaviour_sync()
+    public void Test_baseBehaviour_sync()
     {
         
         //Add new ticket, test for uniqueness
@@ -182,7 +182,7 @@ public class OrderServiceTests
     }
 
     [Fact]
-    public async Task Test1_baseBehaviour_async()
+    public async Task Test_baseBehaviour_async()
     {
         //Add new ticket, test for uniqueness
         var fakeUserId = Guid.NewGuid();
@@ -269,7 +269,7 @@ public class OrderServiceTests
 
 
     [Fact]
-    public async Task Test1_mainService_async()
+    public async Task Test_mainService_async()
     {
         var fakeUserId = Guid.NewGuid();
         Assert.NotEqual(Guid.Empty, fakeUserId);
